@@ -1,176 +1,218 @@
-# Schedule Tracking System
+# 🚢 Schedule Tracking System
 
-Multi-carrier vessel schedule inquiry and tracking system based on DCSA standards.
+DCSA 표준 기반 멀티 선사 선박 스케줄 조회 및 화물 트래킹 통합 시스템
 
-## Overview
+## 📋 개요
 
-This system provides a unified interface for querying vessel schedules and tracking cargo across multiple shipping carriers (CMA CGM, HMM, ZIM, Maersk). It abstracts carrier-specific APIs into a standardized DCSA-based domain model.
+여러 해운 선사(CMA CGM, HMM, ZIM, Maersk)의 API를 통합하여 표준화된 인터페이스로 선박 스케줄 및 화물 추적 정보를 제공합니다.
 
-## Architecture
+### 주요 기능
+- 🗓️ **스케줄 조회**: 선박 운항 스케줄, 포트 스케줄, P2P 라우팅
+- 📦 **화물 추적**: 컨테이너/B/L 기반 실시간 트래킹
+- 🔄 **데이터 표준화**: 선사별 API → DCSA 표준 모델 자동 변환
 
-The project follows a layered architecture:
+---
 
-- **Domain Layer** (`src/domain/`): Core business models and logic
-  - Models: DCSA-based domain models (Schedule, Tracking, Common)
-  - Services: Business logic services
-
-- **Adapter Layer** (`src/adapters/`): External API integration
-  - Carriers: Carrier-specific adapters implementing the unified interface
-  - HTTP: HTTP client and authentication management
-  - Factory: Adapter factory for dynamic creation
-
-- **Infrastructure Layer** (`src/infrastructure/`): Cross-cutting concerns
-  - Cache: Caching strategies
-  - Logger: Structured logging
-  - Error: Error handling
-  - Config: Configuration loading
-
-- **API Layer** (`src/api/`): REST API endpoints
-  - Routes: API route definitions
-  - Controllers: Request/response handling
-  - Middleware: Validation, error handling, carrier filtering
-  - DTO: Data Transfer Objects
-
-## Project Structure
+## 🏗️ 프로젝트 구조
 
 ```
 ScheduleTracking/
 ├── src/
-│   ├── domain/              # Domain layer
-│   │   ├── models/          # Domain models (DCSA-based)
-│   │   └── services/       # Business logic
-│   ├── adapters/            # Adapter layer
-│   │   ├── carriers/        # Carrier adapters
-│   │   │   ├── base/        # Base interfaces
-│   │   │   ├── cma-cgm/     # CMA CGM adapter
-│   │   │   ├── hmm/         # HMM adapter
-│   │   │   ├── zim/         # ZIM adapter
-│   │   │   └── maersk/      # Maersk adapter
-│   │   ├── http/            # HTTP client
-│   │   └── factory/         # Adapter factory
-│   ├── infrastructure/      # Infrastructure layer
-│   ├── api/                 # API layer
-│   └── utils/               # Utilities
-├── config/                  # Configuration files
-│   └── carriers/            # Carrier-specific configs
-├── swagger/                 # Swagger/OpenAPI files
-└── tests/                   # Tests
+│   ├── domain/                    # 도메인 레이어
+│   │   └── models/
+│   │       ├── schedule.ts        # 스케줄 모델 (DCSA 기반)
+│   │       ├── tracking.ts        # 트래킹 모델 (DCSA 기반)
+│   │       └── common.ts          # 공통 모델 (Vessel, Location)
+│   │
+│   ├── adapters/                  # 어댑터 레이어 (외부 API 연동)
+│   │   ├── carriers/              # 선사별 어댑터
+│   │   │   ├── base/              # 기본 인터페이스
+│   │   │   ├── cma-cgm/           # CMA CGM 어댑터
+│   │   │   ├── hmm/               # HMM 어댑터 + Mapper
+│   │   │   ├── zim/               # ZIM 어댑터 + Mapper
+│   │   │   └── maersk/            # Maersk 어댑터
+│   │   ├── http/                  # HTTP 클라이언트, 인증 관리
+│   │   └── factory/               # 어댑터 팩토리
+│   │
+│   ├── api/                       # API 레이어 (REST)
+│   │   ├── routes/                # 라우트 정의
+│   │   ├── controllers/           # 컨트롤러
+│   │   └── middleware/            # 검증, 에러 처리
+│   │
+│   ├── infrastructure/            # 인프라 레이어
+│   │   ├── config/                # 설정 로더
+│   │   └── logger/                # 로깅 (Winston)
+│   │
+│   └── index.ts                   # 앱 진입점
+│
+├── config/carriers/               # 선사별 설정 (JSON)
+├── CMACGM/                        # CMA CGM Swagger 스펙
+├── HMM/                           # HMM Swagger 스펙
+├── MAERSK/                        # Maersk Swagger 스펙
+└── ZIM/                           # ZIM Swagger 스펙
 ```
 
-## Getting Started
+---
 
-### Prerequisites
+## 🛠️ 기술 스택
 
-- **Node.js 20.10.5+** (`.nvmrc` 파일 참고)
-- **npm 10.0.0+** 또는 pnpm
-- nvm (Node Version Manager) 권장 - 프로젝트별 Node.js 버전 관리
+- **Runtime**: Node.js 20.10.5+
+- **Language**: TypeScript
+- **Framework**: Express.js
+- **HTTP Client**: Axios
+- **Logging**: Winston
+- **Standard**: DCSA (Digital Container Shipping Association)
 
-자세한 개발 환경 설정은 `DEVELOPMENT_SETUP.md`를 참고하세요.
+---
 
-### Installation
+## 🚀 빠른 시작
+
+### 1. 의존성 설치
 
 ```bash
-# Install dependencies
 npm install
+```
 
-# Build the project
-npm run build
+### 2. 환경 변수 설정
 
-# Run in development mode
+`.env.example`을 참고하여 `.env` 파일 생성:
+
+```bash
+cp .env.example .env
+```
+
+각 선사 API Key를 입력:
+
+```env
+# CMA CGM
+CMCG_API_KEY=your_cma_cgm_api_key
+
+# HMM (엔드포인트별 키)
+HMM_API_KEY_SCHEDULE=your_hmm_schedule_key
+HMM_API_KEY_TRACKING=your_hmm_tracking_key
+
+# ZIM
+ZIM_PRIMARY_KEY_SCHEDULE=your_zim_schedule_key
+ZIM_PRIMARY_KEY_TRACKING=your_zim_tracking_key
+
+# Maersk
+MAERSK_CONSUMER_KEY=your_maersk_consumer_key
+MAERSK_SECRET_KEY=your_maersk_secret_key
+
+# App Settings
+NODE_ENV=development
+PORT=3000
+```
+
+### 3. 실행
+
+```bash
+# 개발 모드
 npm run dev
 
-# Run production build
+# 프로덕션 빌드
+npm run build
 npm start
 ```
 
-### Configuration
+### 4. 테스트
 
-#### 1. 환경 변수 설정 (.env 파일)
-
-**프로젝트 루트에 `.env` 파일을 생성**하고 다음 형식으로 작성하세요:
-
-```env
-# CMA CGM (API Key)
-# Swagger에 따르면 OAuth2와 API Key 둘 다 지원하지만, API Key 하나만 받으셨다면:
-CMCG_API_KEY=your_cma_cgm_api_key_here
-# OAuth2를 사용하려면 (Private connection, 더 많은 기능):
-# CMCG_CLIENT_ID=your_cma_cgm_client_id_here
-# CMCG_CLIENT_SECRET=your_cma_cgm_client_secret_here
-
-# HMM (API Key - 엔드포인트별로 다른 키 사용)
-# Vessel Schedule API Key
-HMM_API_KEY_SCHEDULE=your_hmm_schedule_api_key_here
-# Track and Trace API Key
-HMM_API_KEY_TRACKING=your_hmm_tracking_api_key_here
-# Port Schedule API Key (선택사항)
-HMM_API_KEY_PORT_SCHEDULE=your_hmm_port_schedule_api_key_here
-# 기본 API Key (fallback, 선택사항)
-HMM_API_KEY=your_hmm_api_key_here
-
-# ZIM (API Key - Primary/Secondary Key 지원)
-# 각 API별로 Primary Key와 Secondary Key를 받으셨다면:
-# Vessel Schedule-Sandbox
-ZIM_PRIMARY_KEY_SCHEDULE=your_zim_schedule_primary_key_here
-ZIM_SECONDARY_KEY_SCHEDULE=your_zim_schedule_secondary_key_here
-# Tracing-Sandbox
-ZIM_PRIMARY_KEY_TRACKING=your_zim_tracking_primary_key_here
-ZIM_SECONDARY_KEY_TRACKING=your_zim_tracking_secondary_key_here
-# 또는 일반 API Key (fallback)
-ZIM_API_KEY_SCHEDULE=your_zim_schedule_api_key_here
-ZIM_API_KEY_TRACKING=your_zim_tracking_api_key_here
-# 기본 API Key (fallback)
-ZIM_API_KEY=your_zim_api_key_here
-
-# Maersk (OAuth2 + Consumer Key)
-# Consumer Key와 Secret Key를 받으셨다면:
-MAERSK_CONSUMER_KEY=your_maersk_consumer_key_here
-MAERSK_SECRET_KEY=your_maersk_secret_key_here
-# 또는 (둘 다 지원):
-# MAERSK_CLIENT_ID=your_maersk_consumer_key_here
-# MAERSK_CLIENT_SECRET=your_maersk_secret_key_here
-
-# Application Settings
-NODE_ENV=development
-PORT=3000
-LOG_LEVEL=info
+```bash
+# Health Check
+curl http://localhost:3000/health
 ```
 
-**⚠️ 중요사항:**
-- `.env` 파일은 **절대 Git에 커밋하지 마세요!** (이미 .gitignore에 포함됨)
-- 환경 변수 이름은 **정확히 일치**해야 합니다 (대소문자 구분)
-- Carrier Code: `CMCG`, `HMM`, `ZIM`, `MAERSK` (대문자)
-- 각 선사 포털에서 발급받은 **실제 API Key/토큰**으로 교체하세요
+---
 
-#### 2. 선사별 API Key 발급 방법
+## 📡 API 사용법
 
-- **CMA CGM**: [API Portal](https://api-portal.cma-cgm.com/) - OAuth2 Client Credentials
-- **HMM**: HMM API Gateway 포털 - API Key
-- **ZIM**: ZIM API 포털 - API Key  
-- **Maersk**: [Developer Portal](https://developer.maersk.com/) - OAuth2 + API Key
+### Schedule API
 
-자세한 내용은 `NEXT_STEPS.md` 파일을 참고하세요.
+```bash
+# 전체 선사 스케줄 조회
+GET /api/v1/schedules?carrier=all
 
-## Carrier Support
+# 특정 선사 스케줄 조회
+GET /api/v1/schedules?carrier=cma-cgm&vesselIMONumber=9321483
 
-| Carrier | Schedule API | Tracking API | Standard |
-|---------|-------------|--------------|----------|
-| CMA CGM | ✅ DCSA | ✅ DCSA | Full DCSA |
-| HMM | ⚠️ Proprietary | ⚠️ DCSA-based | Mapper required |
-| ZIM | ⚠️ Proprietary | ✅ DCSA | Mapper required for Schedule |
-| Maersk | ✅ DCSA | ✅ DCSA | Full DCSA |
+# P2P 라우팅 (CMA CGM)
+GET /api/v1/schedules?carrier=cma-cgm&unLocodePlaceOfLoading=CNSGH&unLocodePlaceOfDischarge=NLRTM
+```
 
-## Development
+**주요 파라미터**:
+| 파라미터 | 설명 | 예시 |
+|---------|------|------|
+| `carrier` | 선사 코드 | `cma-cgm`, `hmm`, `zim`, `maersk`, `all` |
+| `vesselIMONumber` | 선박 IMO 번호 | `9321483` |
+| `carrierServiceCode` | 서비스 코드 | `FAL7` |
+| `startDate` / `endDate` | 조회 기간 | `2025-01-01` |
 
-### Adding a New Carrier
+### Tracking API
 
-1. Create carrier config: `config/carriers/[carrier-name].json`
-2. Create adapter directory: `src/adapters/carriers/[carrier-name]/`
-3. Implement `CarrierAdapter` interface
-4. Add mappers if needed (for non-DCSA APIs)
+```bash
+# 컨테이너 번호로 추적
+GET /api/v1/tracking?carrier=all&equipmentReference=APZU4812090
 
-See `COMPLETE_GUIDE.md` for detailed instructions.
+# B/L 번호로 추적
+GET /api/v1/tracking?carrier=cma-cgm&transportDocumentReference=SEL1988565
 
-## License
+# Booking 번호로 추적 (HMM)
+GET /api/v1/tracking?carrier=hmm&carrierBookingReference=SELM96466400&equipmentReference=ZZ
+```
+
+**주요 파라미터**:
+| 파라미터 | 설명 | 예시 |
+|---------|------|------|
+| `equipmentReference` | 컨테이너 번호 | `APZU4812090` |
+| `transportDocumentReference` | B/L 번호 | `SEL1988565` |
+| `carrierBookingReference` | Booking 번호 | `SELM96466400` |
+
+---
+
+## 🚢 선사별 지원 현황
+
+| 선사 | Schedule API | Tracking API | 표준 | 비고 |
+|------|-------------|--------------|------|------|
+| **CMA CGM** | ✅ DCSA | ✅ DCSA | Full DCSA | 직접 매핑 |
+| **HMM** | ⚠️ Proprietary | ⚠️ DCSA-based | Mapper 사용 | POST 방식 |
+| **ZIM** | ⚠️ Proprietary | ✅ DCSA | Mapper 사용 (Schedule) | P2P만 지원 |
+| **Maersk** | ✅ DCSA | ✅ DCSA | Full DCSA | 직접 매핑 |
+
+### 선사별 필수 파라미터
+
+| 선사 | Schedule | Tracking |
+|------|----------|----------|
+| CMA CGM | 선택적 | `equipmentReference` 또는 `transportDocumentReference` |
+| HMM | `carrierVoyageNumber` 필수 | `carrierBookingReference` + `equipmentReference` 필수 |
+| ZIM | `originCode`, `destCode`, `fromDate`, `toDate` | `equipmentReference` |
+| Maersk | 선택적 | `equipmentReference` 또는 `transportDocumentReference` |
+
+---
+
+## 🔑 API Key 발급
+
+| 선사 | 포털 | 인증 방식 |
+|------|------|----------|
+| CMA CGM | [api-portal.cma-cgm.com](https://api-portal.cma-cgm.com/) | API Key / OAuth2 |
+| HMM | HMM API Gateway | API Key |
+| ZIM | ZIM API Portal | API Key |
+| Maersk | [developer.maersk.com](https://developer.maersk.com/) | OAuth2 + API Key |
+
+---
+
+## 📁 NPM Scripts
+
+```bash
+npm run dev      # 개발 서버 실행 (ts-node)
+npm run build    # TypeScript 컴파일
+npm start        # 프로덕션 서버 실행
+npm run watch    # 파일 변경 감지 빌드
+npm run lint     # ESLint 실행
+npm run format   # Prettier 포맷팅
+```
+
+---
+
+## 📄 License
 
 MIT
-
