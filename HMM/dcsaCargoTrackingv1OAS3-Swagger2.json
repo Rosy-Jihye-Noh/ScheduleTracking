@@ -1,0 +1,110 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "Track and Trace (DCSA)\n<>\nTrack and Trace (DCSA) Information",
+    "version" : "v1",
+    "title" : "dcsaCargoTracking"
+  },
+  "host" : "apigw.hmm21.com",
+  "basePath" : "/gateway/dcsaCargoTracking/v1",
+  "schemes" : [ "http" ],
+  "security" : [ {
+    "apiKey" : [ ]
+  }, {
+    "apiKey" : [ ]
+  } ],
+  "paths" : {
+    "/cargo-tracking-dcsa" : {
+      "get" : {
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "carrierBookingReference",
+          "in" : "query",
+          "description" : "From Location Code",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "equipmentReference",
+          "in" : "query",
+          "description" : "RECEIVE TERM CODE",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "type" : "object"
+          },
+          "x-examples" : {
+            "application/json" : "?carrierBookingReference=SELM96466400&equipmentReference=ZZ"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "examples" : {
+              "application/json" : "{\n    \"shipment\": {\n        \"eventID\": \"CTP20111600055683\",\n        \"carrierBookingReference\": \"SELM96466400\",\n        \"deliveryDateTime\": \"2021-02-25T00:47:00-07:00\",\n        \"carrierID\": \"HDMU\"\n    },\n    \"transport\": {\n        \"eventID\": \"CTP20111600055683\",\n        \"transportName\": \"MOL CELEBRATION\",\n        \"modeOfTransportCode\": \"Vessel\",\n        \"loadTransportCallId\": \"SELM964664001M1KRPUS\",\n        \"dischargeTransportCallId\": \"SELM964664001M1USOAK\",\n        \"vesselImoNumber\": \"9321251\"\n    },\n    \"equipment\": {\n        \"ISOEquipmentCode\": \"45G1\"\n    },\n    \"shipmentEvent\": [\n        {\n            \"eventID\": \"WEBSELM964664001\",\n            \"eventCreatedDateTime\": \"2020-11-13T18:07:22+09:00\",\n            \"eventType\": \"Shipment\",\n            \"eventClassifierCode\": \"ACT\",\n            \"eventDateTime\": \"2020-11-13T18:07:22+09:00\",\n            \"shipmentEventTypeCode\": \"RECE\",\n            \"documentId\": \"SELM96466400\",\n            \"documentTypeCode\": \"CBR\"\n        }\n    ],\n    \"transportEvent\": [\n        {\n            \"eventID\": \"CTP201116000556832011\",\n            \"eventCreatedDateTime\": \"2020-11-16T11:26:31+09:00\",\n            \"eventType\": \"Transport\",\n            \"eventClassifierCode\": \"ACT\",\n            \"eventDateTime\": \"2021-01-14T16:43:00+09:00\",\n            \"transportEventTypeCode\": \"ARRI\",\n            \"transportCall\": {\n                \"facilityTypeCode\": \"KRPUSPNC\",\n                \"otherFacility\": \"1448 SEOUNGBUK-DONG, GANSEO-GU, BUSAN, KOREA \",\n                \"modeOfTransport\": \"Truck\",\n                \"UNLocationCode\": \"KRPUS\",\n                \"location\": \"KRPUS\"\n            }\n        }\n    ],\n    \"equipmentEvent\": [\n        {\n            \"eventID\": \"CTP201116000556832011\",\n            \"eventType\": \"Equipment\",\n            \"eventCreatedDateTime\": \"2020-11-16T11:26:31+09:00\",\n            \"eventDateTime\": \"2021-01-14T16:43:00+09:00\",\n            \"eventClassifierCode\": \"ACT\",\n            \"equipmentEventTypeCode\": \"GTIN\",\n            \"ISOEquipmentCode\": \"45G1\",\n            \"emptyIndicatorCode\": \"Laden\",\n            \"eventLocation\": \"KRPUS\",\n            \"transportCall\": {\n                \"UNLocationCode\": \"KRPUS\",\n                \"facilityCode\": \"KRPUSPNC\",\n                \"facilityTypeCode\": \"POTE\",\n                \"otherFacility\": \"1448 SEOUNGBUK-DONG, GANSEO-GU, BUSAN, KOREA \",\n                \"modeOfTransport\": \"Truck\",\n                \"location\": \"KRPUS\"\n            }\n        }\n    ],\n    \"transportCall\": [\n        {\n            \"transportCallID\": \"SELM964664001M1KRPUS\",\n            \"carrierServiceCode\": \"PS6\",\n            \"exportVoyageNumber\": \"0080E\",\n            \"transportCallSequenceNumber\": 1,\n            \"UNLocationCode\": \"KRPUS\",\n            \"facilityCode\": \"KRPUSPNC\",\n            \"otherFacility\": \"1448 SEOUNGBUK-DONG, GANSEO-GU, BUSAN, KOREA \",\n            \"modeOfTransport\": \"VESSEL\",\n            \"location\": \"KRPUS\",\n            \"vessel\": {\n                \"vesselIMONumber\": \"9321251\",\n                \"vesselName\": \"MOL CELEBRATION\",\n                \"vesselFlag\": \"BS\",\n                \"vesselCallSignNumber\": \"C6WW7\",\n                \"vesselOperatorCarrierCode\": \"JCEB\"\n            }\n        }\n    ]\n}"
+            }
+          },
+          "400" : {
+            "description" : "",
+            "examples" : {
+              "application/json" : "{\n    \"errors\": {\n        \"reason\": \"missingParameter\",\n        \"message\": \"The API request is missing a required parameter\"\n    },\n    \"statusCode\": \"400\",\n    \"statusCodeText\": \"Bad Request\"\n}"
+            }
+          },
+          "401" : {
+            "description" : "",
+            "examples" : {
+              "application/json" : "{\n    \"errors\": {\n        \"reason\": \"invalidCredentials\",\n        \"message\": \"The supplied authorization credentials for the request are invalid\"\n    },\n    \"statusCode\": \"401\",\n    \"statusCodeText\": \"Authentication failed\"\n}"
+            }
+          },
+          "500" : {
+            "description" : "",
+            "examples" : {
+              "application/json" : "{\n    \"errors\": {\n        \"reason\": \"internalError\",\n        \"message\": \"The request failed due to an internal error\"\n    },\n    \"statusCode\": \"500\",\n    \"statusCodeText\": \"Internal Server Error\"\n}"
+            }
+          },
+          "403" : {
+            "description" : "",
+            "examples" : {
+              "application/json" : "{\n    \"errors\": {\n        \"reason\": \"accessDenied\",\n        \"message\": \"The requested operation is forbidden\"\n    },\n    \"statusCode\": \"403\",\n    \"statusCodeText\": \"Forbidden\"\n}"
+            }
+          },
+          "404" : {
+            "description" : "",
+            "examples" : {
+              "application/json" : "{\n    \"errors\": {\n        \"reason\": \"notFound\",\n        \"message\": \"The requested resource could not be found.404 Not found MAY be used to mask sensitive information for both 400, 401 and 403\"\n    },\n    \"statusCode\": \"404\",\n    \"statusCodeText\": \"Not Found\"\n}"
+            }
+          },
+          "405" : {
+            "description" : "",
+            "examples" : {
+              "application/json" : "{\n    \"errors\": {\n        \"reason\": \"httpMethodNotAllowed\",\n        \"message\": \"The HTTP method for the request is not supported\"\n    },\n    \"statusCode\": \"405\",\n    \"statusCodeText\": \"Method Not Allowed\"\n}\n"
+            }
+          },
+          "429" : {
+            "description" : "",
+            "examples" : {
+              "application/json" : "{\n    \"errors\": {\n        \"reason\": \"rateLimitExceeded\",\n        \"message\": \"Too many requests have been sent recently. A Retry-After header SHOULD be added to notify consumer when to try again\"\n    },\n    \"statusCode\": \"429\",\n    \"statusCodeText\": \"Too Many Requests\"\n}"
+            }
+          },
+          "409" : {
+            "description" : "",
+            "examples" : {
+              "application/json" : "{\n    \"errors\": {\n        \"reason\": \"ResourceAlreadyExists\",\n        \"message\": \"The resource already exists. Used when a 'Unique constrain violation' occurs\"\n    },\n    \"statusCode\": \"409\",\n    \"statusCodeText\": \"Conflict\"\n}\n"
+            }
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions" : {
+    "apiKey" : {
+      "type" : "apiKey",
+      "name" : "x-Gateway-APIKey",
+      "in" : "header"
+    }
+  }
+}

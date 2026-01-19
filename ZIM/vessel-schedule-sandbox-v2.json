@@ -1,0 +1,1072 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "Vessel Schedule - sandbox",
+        "description": "ZIM Point to Point Schedule with cutoff dates, vessel call sign and vessel lloyd's code",
+        "contact": {},
+        "version": "v2"
+    },
+    "servers": [
+        {
+            "url": "https://apigw.zim.com/vesselSchedule-sandbox/v2"
+        }
+    ],
+    "paths": {
+        "/pointToPoint": {
+            "get": {
+                "summary": "ZIM Point to Point Schedule",
+                "description": "**Query parameters include the following**\n\n1.  ‘From Place’, ‘To Place’ (using valid UN Location code). The API will provide a list of direct or indirect routes, including transshipment ports.\n\n2.  Each route has its own schedule and list of vessels;  each vessel is linked to each leg.\n    \n3.  If the selected ‘From’ and/or ‘To’ fields are inland locations, the leg will be defined as a Land Leg.\n\n4.  Cut Off dates are available only for the first marine leg of each routes result\n",
+                "operationId": "Point-to-Point",
+                "parameters": [
+                    {
+                        "name": "originCode",
+                        "in": "query",
+                        "description": "UN Location code of Origin Port (Maximum of 5 characters. First 2 represent Country code + 3 indicating location in that country)",
+                        "required": true,
+                        "schema": {
+                            "maxLength": 5,
+                            "pattern": "^[A-Z0-9]*$",
+                            "type": "string"
+                        },
+                        "example": "USCHI"
+                    },
+                    {
+                        "name": "destCode",
+                        "in": "query",
+                        "description": "UN Location code of Destination Port (Maximum of 5 characters. First 2 represent Country code + 3 indicating location in that country)",
+                        "required": true,
+                        "schema": {
+                            "maxLength": 5,
+                            "pattern": "^[A-Z0-9]*$",
+                            "type": "string"
+                        },
+                        "example": "JPNKO"
+                    },
+                    {
+                        "name": "fromDate",
+                        "in": "query",
+                        "description": "From Date \"YYYY-MM-DD\"",
+                        "required": true,
+                        "schema": {
+                            "maxLength": 10,
+                            "pattern": "^[0-9]{4}-(1[0-2]|0[1-9])-(3[01]|[12][0-9]|0[1-9])$",
+                            "type": "string"
+                        },
+                        "example": "2021-08-15"
+                    },
+                    {
+                        "name": "toDate",
+                        "in": "query",
+                        "description": "To Date \"YYYY-MM-DD\"",
+                        "required": true,
+                        "schema": {
+                            "maxLength": 10,
+                            "pattern": "^[0-9]{4}-(1[0-2]|0[1-9])-(3[01]|[12][0-9]|0[1-9])$",
+                            "type": "string"
+                        },
+                        "example": "2021-11-15"
+                    },
+                    {
+                        "name": "sortByDepartureOrArrival",
+                        "in": "query",
+                        "description": "Departure or Arrival Indicator (Only Departure or Arrival should be provided)",
+                        "required": true,
+                        "schema": {
+                            "enum": [
+                                "Arrival",
+                                "Departure"
+                            ],
+                            "type": "string"
+                        },
+                        "example": "Arrival"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/P2PResponse"
+                                },
+                                "example": {
+                                    "response": {
+                                        "routes": [
+                                            {
+                                                "departurePortName": "SHANGHAI (SH)",
+                                                "arrivalPort": "USNYC",
+                                                "routeLegs": [
+                                                    {
+                                                        "departurePortName": "SHANGHAI (SH)",
+                                                        "depotFrom": "TGD",
+                                                        "amsClosingDate": null,
+                                                        "legOrder": 1,
+                                                        "line": "ZBA",
+                                                        "departurePort": "CNSHA",
+                                                        "callSign": "HPDM",
+                                                        "leg": "E",
+                                                        "reeferEntryPortCutOffDate": null,
+                                                        "consortSailingNumber": "317E",
+                                                        "docClosingDate": "2023-05-01T04:00:00.0000000+00:00",
+                                                        "containerClosingDate": "2023-05-03T04:00:00.0000000+00:00",
+                                                        "vesselCode": "ES5 ",
+                                                        "departureDate": "2023-05-05T12:00:00.0000000+00:00",
+                                                        "depotTo": "TAP",
+                                                        "vgmClosingDate": "2023-05-01T04:00:00.0000000+00:00",
+                                                        "usDocClosingDate": null,
+                                                        "lloydsCode": "9502972",
+                                                        "arrivalDate": "2023-06-01T06:00:00.0000000+00:00",
+                                                        "voyage": "3",
+                                                        "arrivalPort": "USNYC",
+                                                        "hazardousDocsCutOff": null,
+                                                        "firstGateInDate": "2023-04-30T04:00:00.0000000+00:00",
+                                                        "arrivalPortName": "NEW YORK (NY)",
+                                                        "vesselName": "MAERSK ESMERALDAS"
+                                                    }
+                                                ],
+                                                "transitTime": 27,
+                                                "routeLegCount": 1,
+                                                "departurePort": "CNSHA",
+                                                "departureDate": "2023-05-05T12:00:00.0000000+00:00",
+                                                "routeSequence": 1,
+                                                "arrivalPortName": "NEW YORK (NY)",
+                                                "arrivalDate": "2023-06-01T06:00:00.0000000+00:00"
+                                            },
+                                            {
+                                                "departurePortName": "SHANGHAI (SH)",
+                                                "arrivalPort": "USNYC",
+                                                "routeLegs": [
+                                                    {
+                                                        "departurePortName": "SHANGHAI (SH)",
+                                                        "depotFrom": "TGD",
+                                                        "amsClosingDate": null,
+                                                        "legOrder": 1,
+                                                        "line": "ZBA",
+                                                        "departurePort": "CNSHA",
+                                                        "callSign": "OYAU2",
+                                                        "leg": "E",
+                                                        "reeferEntryPortCutOffDate": null,
+                                                        "consortSailingNumber": "318E",
+                                                        "docClosingDate": "2023-05-07T10:00:00.0000000+00:00",
+                                                        "containerClosingDate": "2023-05-10T10:00:00.0000000+00:00",
+                                                        "vesselCode": "GZM ",
+                                                        "departureDate": "2023-05-11T11:00:00.0000000+00:00",
+                                                        "depotTo": "TAP",
+                                                        "vgmClosingDate": "2023-05-07T10:00:00.0000000+00:00",
+                                                        "usDocClosingDate": null,
+                                                        "lloydsCode": "9302877",
+                                                        "arrivalDate": "2023-06-09T03:00:00.0000000+00:00",
+                                                        "voyage": "19",
+                                                        "arrivalPort": "USNYC",
+                                                        "hazardousDocsCutOff": null,
+                                                        "firstGateInDate": "2023-05-06T10:00:00.0000000+00:00",
+                                                        "arrivalPortName": "NEW YORK (NY)",
+                                                        "vesselName": "GUDRUN MAERSK"
+                                                    }
+                                                ],
+                                                "transitTime": 29,
+                                                "routeLegCount": 1,
+                                                "departurePort": "CNSHA",
+                                                "departureDate": "2023-05-11T11:00:00.0000000+00:00",
+                                                "routeSequence": 2,
+                                                "arrivalPortName": "NEW YORK (NY)",
+                                                "arrivalDate": "2023-06-09T03:00:00.0000000+00:00"
+                                            },
+                                            {
+                                                "departurePortName": "SHANGHAI (SH)",
+                                                "arrivalPort": "USNYC",
+                                                "routeLegs": [
+                                                    {
+                                                        "departurePortName": "SHANGHAI (SH)",
+                                                        "depotFrom": "TGD",
+                                                        "amsClosingDate": null,
+                                                        "legOrder": 1,
+                                                        "line": "ZBA",
+                                                        "departurePort": "CNSHA",
+                                                        "callSign": "D5JH8",
+                                                        "leg": "E",
+                                                        "reeferEntryPortCutOffDate": null,
+                                                        "consortSailingNumber": "319E",
+                                                        "docClosingDate": "2023-05-17T07:00:00.0000000+00:00",
+                                                        "containerClosingDate": "2023-05-19T07:00:00.0000000+00:00",
+                                                        "vesselCode": "LE1 ",
+                                                        "departureDate": "2023-05-20T10:00:00.0000000+00:00",
+                                                        "depotTo": "TAP",
+                                                        "vgmClosingDate": "2023-05-17T07:00:00.0000000+00:00",
+                                                        "usDocClosingDate": null,
+                                                        "lloydsCode": "9728253",
+                                                        "arrivalDate": "2023-06-17T06:00:00.0000000+00:00",
+                                                        "voyage": "34",
+                                                        "arrivalPort": "USNYC",
+                                                        "hazardousDocsCutOff": null,
+                                                        "firstGateInDate": "2023-05-16T07:00:00.0000000+00:00",
+                                                        "arrivalPortName": "NEW YORK (NY)",
+                                                        "vesselName": "MAERSK SHIVLING"
+                                                    }
+                                                ],
+                                                "transitTime": 28,
+                                                "routeLegCount": 1,
+                                                "departurePort": "CNSHA",
+                                                "departureDate": "2023-05-20T10:00:00.0000000+00:00",
+                                                "routeSequence": 3,
+                                                "arrivalPortName": "NEW YORK (NY)",
+                                                "arrivalDate": "2023-06-17T06:00:00.0000000+00:00"
+                                            },
+                                            {
+                                                "departurePortName": "SHANGHAI (SH)",
+                                                "arrivalPort": "USNYC",
+                                                "routeLegs": [
+                                                    {
+                                                        "departurePortName": "SHANGHAI (SH)",
+                                                        "depotFrom": "TGD",
+                                                        "amsClosingDate": null,
+                                                        "legOrder": 1,
+                                                        "line": "ZBA",
+                                                        "departurePort": "CNSHA",
+                                                        "callSign": "D5IN3",
+                                                        "leg": "E",
+                                                        "reeferEntryPortCutOffDate": null,
+                                                        "consortSailingNumber": "320E",
+                                                        "docClosingDate": "2023-05-21T10:00:00.0000000+00:00",
+                                                        "containerClosingDate": "2023-05-23T10:00:00.0000000+00:00",
+                                                        "vesselCode": "CC4 ",
+                                                        "departureDate": "2023-05-24T09:00:00.0000000+00:00",
+                                                        "depotTo": "TAP",
+                                                        "vgmClosingDate": "2023-05-21T10:00:00.0000000+00:00",
+                                                        "usDocClosingDate": null,
+                                                        "lloydsCode": "9718935",
+                                                        "arrivalDate": "2023-06-23T11:00:00.0000000+00:00",
+                                                        "voyage": "20",
+                                                        "arrivalPort": "USNYC",
+                                                        "hazardousDocsCutOff": null,
+                                                        "firstGateInDate": "2023-05-20T10:00:00.0000000+00:00",
+                                                        "arrivalPortName": "NEW YORK (NY)",
+                                                        "vesselName": "CCNI ANDES"
+                                                    }
+                                                ],
+                                                "transitTime": 30,
+                                                "routeLegCount": 1,
+                                                "departurePort": "CNSHA",
+                                                "departureDate": "2023-05-24T09:00:00.0000000+00:00",
+                                                "routeSequence": 4,
+                                                "arrivalPortName": "NEW YORK (NY)",
+                                                "arrivalDate": "2023-06-23T11:00:00.0000000+00:00"
+                                            },
+                                            {
+                                                "departurePortName": "SHANGHAI (SH)",
+                                                "arrivalPort": "USNYC",
+                                                "routeLegs": [
+                                                    {
+                                                        "departurePortName": "SHANGHAI (SH)",
+                                                        "depotFrom": "TGD",
+                                                        "amsClosingDate": null,
+                                                        "legOrder": 1,
+                                                        "line": "ZBA",
+                                                        "departurePort": "CNSHA",
+                                                        "callSign": "9V6458",
+                                                        "leg": "E",
+                                                        "reeferEntryPortCutOffDate": null,
+                                                        "consortSailingNumber": "321E",
+                                                        "docClosingDate": "2023-05-30T04:00:00.0000000+00:00",
+                                                        "containerClosingDate": "2023-06-01T04:00:00.0000000+00:00",
+                                                        "vesselCode": "MY5 ",
+                                                        "departureDate": "2023-06-02T11:00:00.0000000+00:00",
+                                                        "depotTo": "TAP",
+                                                        "vgmClosingDate": "2023-05-30T04:00:00.0000000+00:00",
+                                                        "usDocClosingDate": null,
+                                                        "lloydsCode": "9398436",
+                                                        "arrivalDate": "2023-06-28T10:00:00.0000000+00:00",
+                                                        "voyage": "17",
+                                                        "arrivalPort": "USNYC",
+                                                        "hazardousDocsCutOff": null,
+                                                        "firstGateInDate": "2023-05-29T04:00:00.0000000+00:00",
+                                                        "arrivalPortName": "NEW YORK (NY)",
+                                                        "vesselName": "MAERSK YUKON"
+                                                    }
+                                                ],
+                                                "transitTime": 26,
+                                                "routeLegCount": 1,
+                                                "departurePort": "CNSHA",
+                                                "departureDate": "2023-06-02T11:00:00.0000000+00:00",
+                                                "routeSequence": 5,
+                                                "arrivalPortName": "NEW YORK (NY)",
+                                                "arrivalDate": "2023-06-28T10:00:00.0000000+00:00"
+                                            },
+                                            {
+                                                "departurePortName": "SHANGHAI (SH)",
+                                                "arrivalPort": "USNYC",
+                                                "routeLegs": [
+                                                    {
+                                                        "departurePortName": "SHANGHAI (SH)",
+                                                        "depotFrom": "TGD",
+                                                        "amsClosingDate": null,
+                                                        "legOrder": 1,
+                                                        "line": "ZBA",
+                                                        "departurePort": "CNSHA",
+                                                        "callSign": "OUJK2",
+                                                        "leg": "E",
+                                                        "reeferEntryPortCutOffDate": null,
+                                                        "consortSailingNumber": "322E",
+                                                        "docClosingDate": "2023-06-05T03:00:00.0000000+00:00",
+                                                        "containerClosingDate": "2023-06-08T03:00:00.0000000+00:00",
+                                                        "vesselCode": "GK1 ",
+                                                        "departureDate": "2023-06-09T08:00:00.0000000+00:00",
+                                                        "depotTo": "TAP",
+                                                        "vgmClosingDate": "2023-06-05T03:00:00.0000000+00:00",
+                                                        "usDocClosingDate": null,
+                                                        "lloydsCode": "9359038",
+                                                        "arrivalDate": "2023-07-06T06:00:00.0000000+00:00",
+                                                        "voyage": "24",
+                                                        "arrivalPort": "USNYC",
+                                                        "hazardousDocsCutOff": null,
+                                                        "firstGateInDate": "2023-06-04T03:00:00.0000000+00:00",
+                                                        "arrivalPortName": "NEW YORK (NY)",
+                                                        "vesselName": "GUSTAV MAERSK"
+                                                    }
+                                                ],
+                                                "transitTime": 27,
+                                                "routeLegCount": 1,
+                                                "departurePort": "CNSHA",
+                                                "departureDate": "2023-06-09T08:00:00.0000000+00:00",
+                                                "routeSequence": 6,
+                                                "arrivalPortName": "NEW YORK (NY)",
+                                                "arrivalDate": "2023-07-06T06:00:00.0000000+00:00"
+                                            },
+                                            {
+                                                "departurePortName": "SHANGHAI (SH)",
+                                                "arrivalPort": "USNYC",
+                                                "routeLegs": [
+                                                    {
+                                                        "departurePortName": "SHANGHAI (SH)",
+                                                        "depotFrom": "TGD",
+                                                        "amsClosingDate": null,
+                                                        "legOrder": 1,
+                                                        "line": "ZBA",
+                                                        "departurePort": "CNSHA",
+                                                        "callSign": "OYCY2",
+                                                        "leg": "E",
+                                                        "reeferEntryPortCutOffDate": null,
+                                                        "consortSailingNumber": "323E",
+                                                        "docClosingDate": "2023-06-13T02:00:00.0000000+00:00",
+                                                        "containerClosingDate": "2023-06-16T02:00:00.0000000+00:00",
+                                                        "vesselCode": "GMK ",
+                                                        "departureDate": "2023-06-17T10:00:00.0000000+00:00",
+                                                        "depotTo": "TAP",
+                                                        "vgmClosingDate": "2023-06-13T02:00:00.0000000+00:00",
+                                                        "usDocClosingDate": null,
+                                                        "lloydsCode": "9302889",
+                                                        "arrivalDate": "2023-07-13T07:00:00.0000000+00:00",
+                                                        "voyage": "24",
+                                                        "arrivalPort": "USNYC",
+                                                        "hazardousDocsCutOff": null,
+                                                        "firstGateInDate": "2023-06-12T02:00:00.0000000+00:00",
+                                                        "arrivalPortName": "NEW YORK (NY)",
+                                                        "vesselName": "GRETE MAERSK"
+                                                    }
+                                                ],
+                                                "transitTime": 26,
+                                                "routeLegCount": 1,
+                                                "departurePort": "CNSHA",
+                                                "departureDate": "2023-06-17T10:00:00.0000000+00:00",
+                                                "routeSequence": 7,
+                                                "arrivalPortName": "NEW YORK (NY)",
+                                                "arrivalDate": "2023-07-13T07:00:00.0000000+00:00"
+                                            },
+                                            {
+                                                "departurePortName": "SHANGHAI (SH)",
+                                                "arrivalPort": "USNYC",
+                                                "routeLegs": [
+                                                    {
+                                                        "departurePortName": "SHANGHAI (SH)",
+                                                        "depotFrom": "TGD",
+                                                        "amsClosingDate": null,
+                                                        "legOrder": 1,
+                                                        "line": "ZBA",
+                                                        "departurePort": "CNSHA",
+                                                        "callSign": "9V5256",
+                                                        "leg": "E",
+                                                        "reeferEntryPortCutOffDate": null,
+                                                        "consortSailingNumber": "324E",
+                                                        "docClosingDate": "2023-06-19T09:00:00.0000000+00:00",
+                                                        "containerClosingDate": "2023-06-21T09:00:00.0000000+00:00",
+                                                        "vesselCode": "UGQ ",
+                                                        "departureDate": "2023-06-22T09:00:00.0000000+00:00",
+                                                        "depotTo": "TAP",
+                                                        "vgmClosingDate": "2023-06-19T09:00:00.0000000+00:00",
+                                                        "usDocClosingDate": null,
+                                                        "lloydsCode": "9725718",
+                                                        "arrivalDate": "2023-07-21T05:00:00.0000000+00:00",
+                                                        "voyage": "16",
+                                                        "arrivalPort": "USNYC",
+                                                        "hazardousDocsCutOff": null,
+                                                        "firstGateInDate": "2023-06-18T09:00:00.0000000+00:00",
+                                                        "arrivalPortName": "NEW YORK (NY)",
+                                                        "vesselName": "MAERSK SIRAC"
+                                                    }
+                                                ],
+                                                "transitTime": 29,
+                                                "routeLegCount": 1,
+                                                "departurePort": "CNSHA",
+                                                "departureDate": "2023-06-22T09:00:00.0000000+00:00",
+                                                "routeSequence": 8,
+                                                "arrivalPortName": "NEW YORK (NY)",
+                                                "arrivalDate": "2023-07-21T05:00:00.0000000+00:00"
+                                            },
+                                            {
+                                                "departurePortName": "SHANGHAI (SH)",
+                                                "arrivalPort": "USNYC",
+                                                "routeLegs": [
+                                                    {
+                                                        "departurePortName": "SHANGHAI (SH)",
+                                                        "depotFrom": "TGD",
+                                                        "amsClosingDate": null,
+                                                        "legOrder": 1,
+                                                        "line": "ZBA",
+                                                        "departurePort": "CNSHA",
+                                                        "callSign": "OYGN2",
+                                                        "leg": "E",
+                                                        "reeferEntryPortCutOffDate": null,
+                                                        "consortSailingNumber": "325E",
+                                                        "docClosingDate": "2023-06-27T08:00:00.0000000+00:00",
+                                                        "containerClosingDate": "2023-06-29T08:00:00.0000000+00:00",
+                                                        "vesselCode": "GEK ",
+                                                        "departureDate": "2023-07-01T05:00:00.0000000+00:00",
+                                                        "depotTo": "TAP",
+                                                        "vgmClosingDate": "2023-06-27T08:00:00.0000000+00:00",
+                                                        "usDocClosingDate": null,
+                                                        "lloydsCode": "9320257",
+                                                        "arrivalDate": "2023-07-27T05:00:00.0000000+00:00",
+                                                        "voyage": "13",
+                                                        "arrivalPort": "USNYC",
+                                                        "hazardousDocsCutOff": null,
+                                                        "firstGateInDate": "2023-06-26T08:00:00.0000000+00:00",
+                                                        "arrivalPortName": "NEW YORK (NY)",
+                                                        "vesselName": "GEORG MAERSK"
+                                                    }
+                                                ],
+                                                "transitTime": 26,
+                                                "routeLegCount": 1,
+                                                "departurePort": "CNSHA",
+                                                "departureDate": "2023-07-01T05:00:00.0000000+00:00",
+                                                "routeSequence": 9,
+                                                "arrivalPortName": "NEW YORK (NY)",
+                                                "arrivalDate": "2023-07-27T05:00:00.0000000+00:00"
+                                            },
+                                            {
+                                                "departurePortName": "SHANGHAI (SH)",
+                                                "arrivalPort": "USNYC",
+                                                "routeLegs": [
+                                                    {
+                                                        "departurePortName": "SHANGHAI (SH)",
+                                                        "depotFrom": "TGD",
+                                                        "amsClosingDate": null,
+                                                        "legOrder": 1,
+                                                        "line": "ZBA",
+                                                        "departurePort": "CNSHA",
+                                                        "callSign": "OUJS2",
+                                                        "leg": "E",
+                                                        "reeferEntryPortCutOffDate": null,
+                                                        "consortSailingNumber": "326E",
+                                                        "docClosingDate": "2023-07-03T03:00:00.0000000+00:00",
+                                                        "containerClosingDate": "2023-07-06T03:00:00.0000000+00:00",
+                                                        "vesselCode": "GD3 ",
+                                                        "departureDate": "2023-07-07T06:00:00.0000000+00:00",
+                                                        "depotTo": "TAP",
+                                                        "vgmClosingDate": "2023-07-03T03:00:00.0000000+00:00",
+                                                        "usDocClosingDate": null,
+                                                        "lloydsCode": "9359052",
+                                                        "arrivalDate": "2023-08-02T08:00:00.0000000+00:00",
+                                                        "voyage": "18",
+                                                        "arrivalPort": "USNYC",
+                                                        "hazardousDocsCutOff": null,
+                                                        "firstGateInDate": "2023-07-02T03:00:00.0000000+00:00",
+                                                        "arrivalPortName": "NEW YORK (NY)",
+                                                        "vesselName": "GERDA MAERSK"
+                                                    }
+                                                ],
+                                                "transitTime": 26,
+                                                "routeLegCount": 1,
+                                                "departurePort": "CNSHA",
+                                                "departureDate": "2023-07-07T06:00:00.0000000+00:00",
+                                                "routeSequence": 10,
+                                                "arrivalPortName": "NEW YORK (NY)",
+                                                "arrivalDate": "2023-08-02T08:00:00.0000000+00:00"
+                                            },
+                                            {
+                                                "departurePortName": "SHANGHAI (SH)",
+                                                "arrivalPort": "USNYC",
+                                                "routeLegs": [
+                                                    {
+                                                        "departurePortName": "SHANGHAI (SH)",
+                                                        "depotFrom": "TGD",
+                                                        "amsClosingDate": null,
+                                                        "legOrder": 1,
+                                                        "line": "ZBA",
+                                                        "departurePort": "CNSHA",
+                                                        "callSign": "9V6464",
+                                                        "leg": "E",
+                                                        "reeferEntryPortCutOffDate": null,
+                                                        "consortSailingNumber": "327E",
+                                                        "docClosingDate": "2023-07-19T10:00:00.0000000+00:00",
+                                                        "containerClosingDate": "2023-07-21T10:00:00.0000000+00:00",
+                                                        "vesselCode": "ER3 ",
+                                                        "departureDate": "2023-07-23T10:00:00.0000000+00:00",
+                                                        "depotTo": "TAP",
+                                                        "vgmClosingDate": "2023-07-19T10:00:00.0000000+00:00",
+                                                        "usDocClosingDate": null,
+                                                        "lloydsCode": "9502910",
+                                                        "arrivalDate": "2023-08-19T07:00:00.0000000+00:00",
+                                                        "voyage": "7",
+                                                        "arrivalPort": "USNYC",
+                                                        "hazardousDocsCutOff": null,
+                                                        "firstGateInDate": "2023-07-18T10:00:00.0000000+00:00",
+                                                        "arrivalPortName": "NEW YORK (NY)",
+                                                        "vesselName": "MAERSK EMERALD"
+                                                    }
+                                                ],
+                                                "transitTime": 28,
+                                                "routeLegCount": 1,
+                                                "departurePort": "CNSHA",
+                                                "departureDate": "2023-07-23T10:00:00.0000000+00:00",
+                                                "routeSequence": 11,
+                                                "arrivalPortName": "NEW YORK (NY)",
+                                                "arrivalDate": "2023-08-19T07:00:00.0000000+00:00"
+                                            },
+                                            {
+                                                "departurePortName": "SHANGHAI (SH)",
+                                                "arrivalPort": "USNYC",
+                                                "routeLegs": [
+                                                    {
+                                                        "departurePortName": "SHANGHAI (SH)",
+                                                        "depotFrom": "TGD",
+                                                        "amsClosingDate": null,
+                                                        "legOrder": 1,
+                                                        "line": "ZBA",
+                                                        "departurePort": "CNSHA",
+                                                        "callSign": "OYGC2",
+                                                        "leg": "E",
+                                                        "reeferEntryPortCutOffDate": null,
+                                                        "consortSailingNumber": "328E",
+                                                        "docClosingDate": "2023-07-21T05:00:00.0000000+00:00",
+                                                        "containerClosingDate": "2023-07-23T05:00:00.0000000+00:00",
+                                                        "vesselCode": "GNU ",
+                                                        "departureDate": "2023-07-24T08:00:00.0000000+00:00",
+                                                        "depotTo": "TAP",
+                                                        "vgmClosingDate": "2023-07-21T05:00:00.0000000+00:00",
+                                                        "usDocClosingDate": null,
+                                                        "lloydsCode": "9302891",
+                                                        "arrivalDate": "2023-08-21T07:00:00.0000000+00:00",
+                                                        "voyage": "20",
+                                                        "arrivalPort": "USNYC",
+                                                        "hazardousDocsCutOff": null,
+                                                        "firstGateInDate": "2023-07-20T05:00:00.0000000+00:00",
+                                                        "arrivalPortName": "NEW YORK (NY)",
+                                                        "vesselName": "GUNVOR MAERSK"
+                                                    }
+                                                ],
+                                                "transitTime": 28,
+                                                "routeLegCount": 1,
+                                                "departurePort": "CNSHA",
+                                                "departureDate": "2023-07-24T08:00:00.0000000+00:00",
+                                                "routeSequence": 12,
+                                                "arrivalPortName": "NEW YORK (NY)",
+                                                "arrivalDate": "2023-08-21T07:00:00.0000000+00:00"
+                                            },
+                                            {
+                                                "departurePortName": "SHANGHAI (SH)",
+                                                "arrivalPort": "USNYC",
+                                                "routeLegs": [
+                                                    {
+                                                        "departurePortName": "SHANGHAI (SH)",
+                                                        "depotFrom": "TGD",
+                                                        "amsClosingDate": null,
+                                                        "legOrder": 1,
+                                                        "line": "ZBA",
+                                                        "departurePort": "CNSHA",
+                                                        "callSign": "D5JH6",
+                                                        "leg": "E",
+                                                        "reeferEntryPortCutOffDate": null,
+                                                        "consortSailingNumber": "329E",
+                                                        "docClosingDate": "2023-07-25T09:00:00.0000000+00:00",
+                                                        "containerClosingDate": "2023-07-28T09:00:00.0000000+00:00",
+                                                        "vesselCode": "MS1 ",
+                                                        "departureDate": "2023-07-29T09:00:00.0000000+00:00",
+                                                        "depotTo": "TAP",
+                                                        "vgmClosingDate": "2023-07-25T09:00:00.0000000+00:00",
+                                                        "usDocClosingDate": null,
+                                                        "lloydsCode": "9732591",
+                                                        "arrivalDate": "2023-08-24T07:00:00.0000000+00:00",
+                                                        "voyage": "10",
+                                                        "arrivalPort": "USNYC",
+                                                        "hazardousDocsCutOff": null,
+                                                        "firstGateInDate": "2023-07-24T09:00:00.0000000+00:00",
+                                                        "arrivalPortName": "NEW YORK (NY)",
+                                                        "vesselName": "MAERSK SARAT"
+                                                    }
+                                                ],
+                                                "transitTime": 27,
+                                                "routeLegCount": 1,
+                                                "departurePort": "CNSHA",
+                                                "departureDate": "2023-07-29T09:00:00.0000000+00:00",
+                                                "routeSequence": 13,
+                                                "arrivalPortName": "NEW YORK (NY)",
+                                                "arrivalDate": "2023-08-24T07:00:00.0000000+00:00"
+                                            },
+                                            {
+                                                "departurePortName": "SHANGHAI (SH)",
+                                                "arrivalPort": "USNYC",
+                                                "routeLegs": [
+                                                    {
+                                                        "departurePortName": "SHANGHAI (SH)",
+                                                        "depotFrom": "TGD",
+                                                        "amsClosingDate": null,
+                                                        "legOrder": 1,
+                                                        "line": "ZBA",
+                                                        "departurePort": "CNSHA",
+                                                        "callSign": "OYAU2",
+                                                        "leg": "E",
+                                                        "reeferEntryPortCutOffDate": null,
+                                                        "consortSailingNumber": "330E",
+                                                        "docClosingDate": "2023-07-30T10:00:00.0000000+00:00",
+                                                        "containerClosingDate": "2023-08-01T10:00:00.0000000+00:00",
+                                                        "vesselCode": "GZM ",
+                                                        "departureDate": "2023-08-03T02:00:00.0000000+00:00",
+                                                        "depotTo": "TAP",
+                                                        "vgmClosingDate": "2023-07-30T10:00:00.0000000+00:00",
+                                                        "usDocClosingDate": null,
+                                                        "lloydsCode": "9302877",
+                                                        "arrivalDate": "2023-08-31T03:00:00.0000000+00:00",
+                                                        "voyage": "20",
+                                                        "arrivalPort": "USNYC",
+                                                        "hazardousDocsCutOff": null,
+                                                        "firstGateInDate": "2023-07-29T10:00:00.0000000+00:00",
+                                                        "arrivalPortName": "NEW YORK (NY)",
+                                                        "vesselName": "GUDRUN MAERSK"
+                                                    }
+                                                ],
+                                                "transitTime": 28,
+                                                "routeLegCount": 1,
+                                                "departurePort": "CNSHA",
+                                                "departureDate": "2023-08-03T02:00:00.0000000+00:00",
+                                                "routeSequence": 14,
+                                                "arrivalPortName": "NEW YORK (NY)",
+                                                "arrivalDate": "2023-08-31T03:00:00.0000000+00:00"
+                                            },
+                                            {
+                                                "departurePortName": "SHANGHAI (SH)",
+                                                "arrivalPort": "USNYC",
+                                                "routeLegs": [
+                                                    {
+                                                        "departurePortName": "SHANGHAI (SH)",
+                                                        "depotFrom": "TGD",
+                                                        "amsClosingDate": null,
+                                                        "legOrder": 1,
+                                                        "line": "ZBA",
+                                                        "departurePort": "CNSHA",
+                                                        "callSign": "9V5283",
+                                                        "leg": "E",
+                                                        "reeferEntryPortCutOffDate": null,
+                                                        "consortSailingNumber": "331E",
+                                                        "docClosingDate": "2023-08-06T10:00:00.0000000+00:00",
+                                                        "containerClosingDate": "2023-08-08T10:00:00.0000000+00:00",
+                                                        "vesselCode": "DL2 ",
+                                                        "departureDate": "2023-08-10T02:00:00.0000000+00:00",
+                                                        "depotTo": "TAP",
+                                                        "vgmClosingDate": "2023-08-06T10:00:00.0000000+00:00",
+                                                        "usDocClosingDate": null,
+                                                        "lloydsCode": "9697428",
+                                                        "arrivalDate": "2023-09-07T03:00:00.0000000+00:00",
+                                                        "voyage": "9",
+                                                        "arrivalPort": "USNYC",
+                                                        "hazardousDocsCutOff": null,
+                                                        "firstGateInDate": "2023-08-05T10:00:00.0000000+00:00",
+                                                        "arrivalPortName": "NEW YORK (NY)",
+                                                        "vesselName": "DALI"
+                                                    }
+                                                ],
+                                                "transitTime": 28,
+                                                "routeLegCount": 1,
+                                                "departurePort": "CNSHA",
+                                                "departureDate": "2023-08-10T02:00:00.0000000+00:00",
+                                                "routeSequence": 15,
+                                                "arrivalPortName": "NEW YORK (NY)",
+                                                "arrivalDate": "2023-09-07T03:00:00.0000000+00:00"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Failure",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ExternalResourceMainFault"
+                                },
+                                "examples": {
+                                    "FromDateIsGreaterThanToDate": {
+                                        "value": {
+                                            "statusCode": "005",
+                                            "message": "From Date cannot be larger than To Date"
+                                        }
+                                    },
+                                    "MissingData/Error": {
+                                        "value": {
+                                            "statusCode": "007",
+                                            "message": "No Matching Marine routes found from origin_code to dest_code for the given date range"
+                                        }
+                                    },
+                                    "ServiceNotAvailable": {
+                                        "value": {
+                                            "statusCode": "008",
+                                            "message": "This service is unavailable"
+                                        }
+                                    },
+                                    "RuntimeServerError": {
+                                        "value": {
+                                            "statusCode": "009",
+                                            "message": "General runtime error"
+                                        }
+                                    },
+                                    "InactivePort": {
+                                        "value": {
+                                            "statusCode": "010",
+                                            "message": "The Port code(s) origin_code and dest_code is marked Inactive in our system"
+                                        }
+                                    },
+                                    "RestrictedPort": {
+                                        "value": {
+                                            "statusCode": "011",
+                                            "message": "The Port code(s) origin_code and dest_code is marked Restricted in our system"
+                                        }
+                                    },
+                                    "InvalidPort": {
+                                        "value": {
+                                            "statusCode": "012",
+                                            "message": "The Port code(s) origin_code and dest_code does not exist in our system"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "P2PResponse": {
+                "title": "P2PResponse",
+                "required": [
+                    "response"
+                ],
+                "type": "object",
+                "properties": {
+                    "response": {
+                        "$ref": "#/components/schemas/P2PRoutes"
+                    }
+                },
+                "additionalProperties": false,
+                "description": "Response from API"
+            },
+            "ExternalResourceMainFault": {
+                "title": "ExternalResourceMainFault",
+                "required": [
+                    "statusCode",
+                    "message"
+                ],
+                "type": "object",
+                "properties": {
+                    "statusCode": {
+                        "type": "string"
+                    },
+                    "message": {
+                        "type": "string"
+                    }
+                },
+                "additionalProperties": false,
+                "description": "Error Response"
+            },
+            "P2PRoutes": {
+                "title": "P2PRoutes",
+                "required": [
+                    "routes"
+                ],
+                "type": "object",
+                "properties": {
+                    "routes": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/P2PRoute"
+                        },
+                        "description": "Route Details"
+                    }
+                },
+                "additionalProperties": false,
+                "description": "Point to Point Route Details"
+            },
+            "P2PRoute": {
+                "title": "P2PRoute",
+                "required": [
+                    "routeSequence",
+                    "departurePort",
+                    "departurePortName",
+                    "departureDate",
+                    "arrivalPort",
+                    "arrivalPortName",
+                    "arrivalDate",
+                    "transitTime",
+                    "routeLegCount",
+                    "routeLegs"
+                ],
+                "type": "object",
+                "properties": {
+                    "routeSequence": {
+                        "type": "number"
+                    },
+                    "departurePort": {
+                        "type": "string",
+                        "description": "From Location UN Location code",
+                        "example": "USCHI"
+                    },
+                    "departurePortName": {
+                        "type": "string",
+                        "description": "From Location name",
+                        "example": "CHICAGO (IL)"
+                    },
+                    "departureDate": {
+                        "type": "string",
+                        "description": "Departure Date and Time",
+                        "format": "date-time",
+                        "example": "2021-08-20T06:00:00.0000000+00:00"
+                    },
+                    "arrivalPort": {
+                        "type": "string",
+                        "description": "Arrival To Location UN Location code",
+                        "example": "JPNKO"
+                    },
+                    "arrivalPortName": {
+                        "type": "string",
+                        "description": "Arrival To Location name",
+                        "example": "NANKO"
+                    },
+                    "arrivalDate": {
+                        "type": "string",
+                        "description": "Date and Time",
+                        "format": "date-time",
+                        "example": "2021-10-28T12:00:00.0000000+00:00"
+                    },
+                    "transitTime": {
+                        "type": "number",
+                        "description": "Transit time",
+                        "example": "69"
+                    },
+                    "routeLegCount": {
+                        "type": "number",
+                        "description": "Leg Count for route",
+                        "example": "1"
+                    },
+                    "routeLegs": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RouteLeg"
+                        },
+                        "description": "Leg Details for Route"
+                    }
+                },
+                "additionalProperties": false,
+                "description": "Route Details"
+            },
+            "RouteLeg": {
+                "title": "RouteLeg",
+                "required": [
+                    "legOrder",
+                    "departurePortName",
+                    "departurePort",
+                    "departureDate",
+                    "arrivalPortName",
+                    "arrivalPort",
+                    "arrivalDate"
+                ],
+                "type": "object",
+                "properties": {
+                    "legOrder": {
+                        "type": "integer",
+                        "description": "Leg Order",
+                        "format": "int32",
+                        "example": "1"
+                    },
+                    "departurePortName": {
+                        "type": "string",
+                        "description": "From Location name",
+                        "example": "Chicago, IL"
+                    },
+                    "departurePort": {
+                        "type": "string",
+                        "description": "From Location UN Location code",
+                        "example": "USCHI"
+                    },
+                    "departureDate": {
+                        "type": "string",
+                        "description": "Departure Date and Time",
+                        "format": "date-time",
+                        "example": "2021-08-20T06:00:00.0000000+00:00"
+                    },
+                    "arrivalPortName": {
+                        "type": "string",
+                        "description": "Arrival To Location name",
+                        "example": "Halifax, NS"
+                    },
+                    "arrivalPort": {
+                        "type": "string",
+                        "description": "Arrival To Location UN Location code",
+                        "example": "CAHAL"
+                    },
+                    "arrivalDate": {
+                        "type": "string",
+                        "description": "Arrival Date and Time",
+                        "format": "date-time",
+                        "example": "2021-08-28T06:00:00.0000000+00:00"
+                    },
+                    "line": {
+                        "type": "string",
+                        "description": "Not Available in case of Land Transportation",
+                        "nullable": true,
+                        "example": "ZSA"
+                    },
+                    "vesselName": {
+                        "type": "string",
+                        "description": "Not Available in case of Land Transportation",
+                        "nullable": true,
+                        "example": "NORTHERN JADE"
+                    },
+                    "vesselCode": {
+                        "type": "string",
+                        "description": "Not Available in case of Land Transportation",
+                        "nullable": true,
+                        "example": "NJ3"
+                    },
+                    "lloydsCode": {
+                        "type": "string",
+                        "description": "Not Available in case of Land Transportation",
+                        "nullable": true,
+                        "example": "9502972"
+                    },
+                    "callSign": {
+                        "type": "string",
+                        "description": "Not Available in case of Land Transportation",
+                        "nullable": true,
+                        "example": "HPDM"
+                    },
+                    "voyage": {
+                        "type": "string",
+                        "description": "Not Available in case of Land Transportation",
+                        "nullable": true,
+                        "example": "11"
+                    },
+                    "leg": {
+                        "type": "string",
+                        "description": "Not Available in case of Land Transportation",
+                        "nullable": true,
+                        "example": "W"
+                    },
+                    "consortSailingNumber": {
+                        "type": "string",
+                        "description": "Not Available in case of Land Transportation",
+                        "nullable": true,
+                        "example": "UL138W"
+                    },
+                    "depotFrom": {
+                        "type": "string",
+                        "description": "From Location Depot",
+                        "nullable": true,
+                        "example": "THF"
+                    },
+                    "depotTo": {
+                        "type": "string",
+                        "description": "To Location Depot",
+                        "nullable": true,
+                        "example": "TMT"
+                    },
+                    "docClosingDate": {
+                        "type": "string",
+                        "description": "Document Closing Date and Time",
+                        "format": "date-time",
+                        "nullable": true,
+                        "example": "2023-05-01T04:00:00.0000000+00:00"
+                    },
+                    "vgmClosingDate": {
+                        "type": "string",
+                        "description": "VGM Closing Date and Time",
+                        "format": "date-time",
+                        "nullable": true,
+                        "example": "2023-05-03T04:00:00.0000000+00:00"
+                    },
+                    "firstGateInDate": {
+                        "type": "string",
+                        "description": "Container Gate In Date and Time",
+                        "format": "date-time",
+                        "nullable": true,
+                        "example": "2023-04-30T04:00:00.0000000+00:00"
+                    },
+                    "containerClosingDate": {
+                        "type": "string",
+                        "description": "Container Closing Date",
+                        "format": "date-time",
+                        "nullable": true,
+                        "example": "2023-05-03T04:00:00.0000000+00:00"
+                    },
+                    "hazardousDocsCutOff": {
+                        "type": "string",
+                        "description": "Hazardous Documents Cutoff Date and Time",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "amsClosingDate": {
+                        "type": "string",
+                        "description": "AMS Closing Date and Time",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "reeferEntryPortCutOffDate": {
+                        "type": "string",
+                        "description": "Reefer container entry port cutoff Date and Time",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "usDocClosingDate": {
+                        "type": "string",
+                        "description": "US Documentation Closing date",
+                        "format": "date-time",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false,
+                "description": "Leg Details for Route"
+            }
+        },
+        "securitySchemes": {
+            "apiKeyHeader": {
+                "type": "apiKey",
+                "name": "Ocp-Apim-Subscription-Key",
+                "in": "header"
+            },
+            "apiKeyQuery": {
+                "type": "apiKey",
+                "name": "subscription-key",
+                "in": "query"
+            }
+        }
+    },
+    "security": [
+        {
+            "apiKeyHeader": []
+        },
+        {
+            "apiKeyQuery": []
+        }
+    ]
+}

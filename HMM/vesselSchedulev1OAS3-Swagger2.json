@@ -1,0 +1,102 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "Vessel Schedule\n<>\nVessel Schedule Information",
+    "version" : "v1",
+    "title" : "vesselSchedule"
+  },
+  "host" : "apigw.hmm21.com",
+  "basePath" : "/gateway/vesselSchedule/v1",
+  "schemes" : [ "http" ],
+  "security" : [ {
+    "apiKey" : [ ]
+  } ],
+  "paths" : {
+    "/vessel-schedule" : {
+      "post" : {
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "vvdCode",
+          "in" : "query",
+          "description" : "VVD Code",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "type" : "object"
+          },
+          "x-examples" : {
+            "application/json" : "{\n    \"vvdCode\" : \"JARK0016\",\n}"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "examples" : {
+              "application/json" : "{\n    \"resultData\": [\n        {\n            \"portCode\": \"SGSIN\",\n            \"portName\": \"SINGAPORE\",\n            \"tmnlCode\": \"SGSINPSA\",\n            \"tmnlName\": \"PSA (PORT OF SINGAPORE AUTHORITY)\",\n            \"vvdCode\": \"JARK0016W\",\n            \"vesselName\": \"AL MURAYKH\",\n            \"scheduleDirectionCode\": \"W\",\n            \"longTermDeparture\": {\n                \"longTermDate\": \"20210818\",\n                \"longTermTime\": \"1400\"\n            },\n            \"arrival\": {\n                \"arrivalDate\": \"20210817\",\n                \"arrivalTime\": \"2100\",\n                \"arrivalStatusCode\": \"L\"\n            },\n            \"berthing\": {\n                \"berthingDate\": \"20210817\",\n                \"berthingTime\": \"2300\",\n                \"berthingStatusCode\": \"L\"\n            },\n            \"departure\": {\n                \"departureDate\": \"20210818\",\n                \"departureTime\": \"1400\",\n                \"departureStatusCode\": \"L\"\n            }\n        }\n    ],\n    \"resultCode\": \"Success\",\n    \"resultMessage\": \"Success\"\n}"
+            }
+          },
+          "400" : {
+            "description" : "",
+            "examples" : {
+              "application/json" : "{\n    \"errors\": {\n        \"reason\": \"missingParameter\",\n        \"message\": \"The API request is missing a required parameter\"\n    },\n    \"statusCode\": \"400\",\n    \"statusCodeText\": \"Bad Request\"\n}"
+            }
+          },
+          "401" : {
+            "description" : "",
+            "examples" : {
+              "application/json" : "{\n    \"errors\": {\n        \"reason\": \"invalidCredentials\",\n        \"message\": \"The supplied authorization credentials for the request are invalid\"\n    },\n    \"statusCode\": \"401\",\n    \"statusCodeText\": \"Authentication failed\"\n}"
+            }
+          },
+          "500" : {
+            "description" : "",
+            "examples" : {
+              "application/json" : "{\n    \"errors\": {\n        \"reason\": \"internalError\",\n        \"message\": \"The request failed due to an internal error\"\n    },\n    \"statusCode\": \"500\",\n    \"statusCodeText\": \"Internal Server Error\"\n}"
+            }
+          },
+          "403" : {
+            "description" : "",
+            "examples" : {
+              "application/json" : "{\n    \"errors\": {\n        \"reason\": \"accessDenied\",\n        \"message\": \"The requested operation is forbidden\"\n    },\n    \"statusCode\": \"403\",\n    \"statusCodeText\": \"Forbidden\"\n}"
+            }
+          },
+          "404" : {
+            "description" : "",
+            "examples" : {
+              "application/json" : "{\n    \"errors\": {\n        \"reason\": \"notFound\",\n        \"message\": \"The requested resource could not be found.404 Not found MAY be used to mask sensitive information for both 400, 401 and 403\"\n    },\n    \"statusCode\": \"404\",\n    \"statusCodeText\": \"Not Found\"\n}"
+            }
+          },
+          "405" : {
+            "description" : "",
+            "examples" : {
+              "application/json" : "{\n    \"errors\": {\n        \"reason\": \"httpMethodNotAllowed\",\n        \"message\": \"The HTTP method for the request is not supported\"\n    },\n    \"statusCode\": \"405\",\n    \"statusCodeText\": \"Method Not Allowed\"\n}"
+            }
+          },
+          "429" : {
+            "description" : "",
+            "examples" : {
+              "application/json" : "{\n    \"errors\": {\n        \"reason\": \"rateLimitExceeded\",\n        \"message\": \"Too many requests have been sent recently. A Retry-After header SHOULD be added to notify consumer when to try again\"\n    },\n    \"statusCode\": \"429\",\n    \"statusCodeText\": \"Too Many Requests\"\n}\n"
+            }
+          },
+          "409" : {
+            "description" : "",
+            "examples" : {
+              "application/json" : "{\n    \"errors\": {\n        \"reason\": \"ResourceAlreadyExists\",\n        \"message\": \"The resource already exists. Used when a 'Unique constrain violation' occurs\"\n    },\n    \"statusCode\": \"409\",\n    \"statusCodeText\": \"Conflict\"\n}\n"
+            }
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions" : {
+    "apiKey" : {
+      "type" : "apiKey",
+      "name" : "x-Gateway-APIKey",
+      "in" : "header"
+    }
+  }
+}

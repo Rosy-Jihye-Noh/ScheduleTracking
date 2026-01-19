@@ -1,0 +1,213 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Carrier Configuration Template",
+  "description": "Template for carrier configuration files. Copy this file and rename it to [carrier-name].json",
+  "type": "object",
+  "required": ["name", "code", "baseUrl"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Full name of the carrier (e.g., 'CMA CGM', 'HMM', 'ZIM', 'Maersk')",
+      "example": "Carrier Name"
+    },
+    "code": {
+      "type": "string",
+      "description": "Short carrier code (e.g., 'CMCG', 'HMM', 'ZIM', 'MAEU')",
+      "pattern": "^[A-Z0-9]{2,10}$",
+      "example": "CARRIER"
+    },
+    "baseUrl": {
+      "type": "string",
+      "description": "Base URL for the carrier's API",
+      "format": "uri",
+      "example": "https://api.carrier.com"
+    },
+    "apis": {
+      "type": "object",
+      "description": "API endpoint configurations",
+      "properties": {
+        "schedule": {
+          "type": "object",
+          "description": "Schedule API configuration",
+          "properties": {
+            "endpoint": {
+              "type": "string",
+              "description": "Endpoint path for schedule API",
+              "example": "/v1/vessel-schedules"
+            },
+            "version": {
+              "type": "string",
+              "description": "API version",
+              "example": "1.0.0"
+            },
+            "standard": {
+              "type": "string",
+              "enum": ["DCSA", "PROPRIETARY"],
+              "description": "Whether the API follows DCSA standard or is proprietary",
+              "example": "DCSA"
+            },
+            "method": {
+              "type": "string",
+              "enum": ["GET", "POST"],
+              "default": "GET",
+              "description": "HTTP method for the endpoint"
+            },
+            "supportsPagination": {
+              "type": "boolean",
+              "default": true,
+              "description": "Whether the API supports pagination"
+            }
+          },
+          "required": ["endpoint", "standard"]
+        },
+        "tracking": {
+          "type": "object",
+          "description": "Tracking API configuration",
+          "properties": {
+            "endpoint": {
+              "type": "string",
+              "description": "Endpoint path for tracking API",
+              "example": "/v1/events"
+            },
+            "version": {
+              "type": "string",
+              "description": "API version",
+              "example": "2.2.0"
+            },
+            "standard": {
+              "type": "string",
+              "enum": ["DCSA", "PROPRIETARY"],
+              "description": "Whether the API follows DCSA standard or is proprietary",
+              "example": "DCSA"
+            },
+            "method": {
+              "type": "string",
+              "enum": ["GET", "POST"],
+              "default": "GET",
+              "description": "HTTP method for the endpoint"
+            },
+            "supportsPagination": {
+              "type": "boolean",
+              "default": true,
+              "description": "Whether the API supports pagination"
+            }
+          },
+          "required": ["endpoint", "standard"]
+        }
+      }
+    },
+    "auth": {
+      "type": "object",
+      "description": "Authentication configuration",
+      "oneOf": [
+        {
+          "type": "object",
+          "title": "OAuth2 Authentication",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "oauth2",
+              "description": "Authentication type"
+            },
+            "tokenUrl": {
+              "type": "string",
+              "format": "uri",
+              "description": "OAuth2 token endpoint URL",
+              "example": "https://auth.carrier.com/as/token.oauth2"
+            },
+            "clientId": {
+              "type": "string",
+              "description": "OAuth2 client ID (should be in .env file, not here)",
+              "example": "YOUR_CLIENT_ID"
+            },
+            "clientSecret": {
+              "type": "string",
+              "description": "OAuth2 client secret (should be in .env file, not here)",
+              "example": "YOUR_CLIENT_SECRET"
+            },
+            "scopes": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "OAuth2 scopes required",
+              "example": ["commercialschedule:read:be", "tandtcommercial:read:be"]
+            }
+          },
+          "required": ["type", "tokenUrl", "scopes"]
+        },
+        {
+          "type": "object",
+          "title": "API Key Authentication",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "apikey",
+              "description": "Authentication type"
+            },
+            "headerName": {
+              "type": "string",
+              "default": "KeyId",
+              "description": "HTTP header name for API key",
+              "example": "KeyId"
+            },
+            "apiKey": {
+              "type": "string",
+              "description": "API key value (should be in .env file, not here)",
+              "example": "YOUR_API_KEY"
+            }
+          },
+          "required": ["type"]
+        }
+      ]
+    },
+    "features": {
+      "type": "object",
+      "description": "Feature flags and capabilities",
+      "properties": {
+        "supportsPagination": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether the carrier API supports pagination"
+        },
+        "maxLimit": {
+          "type": "integer",
+          "default": 100,
+          "description": "Maximum number of items per page",
+          "minimum": 1
+        },
+        "defaultLimit": {
+          "type": "integer",
+          "default": 100,
+          "description": "Default number of items per page",
+          "minimum": 1
+        },
+        "requestTimeout": {
+          "type": "integer",
+          "default": 30000,
+          "description": "Request timeout in milliseconds",
+          "minimum": 1000
+        },
+        "retryAttempts": {
+          "type": "integer",
+          "default": 3,
+          "description": "Number of retry attempts on failure",
+          "minimum": 0
+        },
+        "retryDelay": {
+          "type": "integer",
+          "default": 1000,
+          "description": "Delay between retries in milliseconds",
+          "minimum": 0
+        }
+      }
+    },
+    "enabled": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether this carrier adapter is enabled"
+    }
+  },
+  "additionalProperties": false
+}
+

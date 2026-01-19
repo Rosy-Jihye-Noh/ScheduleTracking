@@ -1,0 +1,910 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "DCSA Track And Trace Sandbox",
+        "description": "Managing and sending Transport and Equipment- events  for Track and Trace (T & T). API specification issued by DCSA.org V2.2.\n",
+        "contact": {},
+        "version": "v1"
+    },
+    "servers": [
+        {
+            "url": "https://apigw.zim.com/trackAndTrace-sandbox/v1"
+        }
+    ],
+    "paths": {
+        "/": {
+            "get": {
+                "summary": "Track And Trace Service Details",
+                "description": "Managing and sending Transport and Equipment events for Track and Trace (T & T). API specification issued by DCSA.org V2.2.  At least one of the following input parameters are mandatory: carrierBookingReference; transportDocumentReference; equipmentReference. At this stage other filtering or sorting parameters are not supported at the result set",
+                "operationId": "TrackAndTraceService_GET",
+                "parameters": [
+                    {
+                        "name": "eventType",
+                        "in": "query",
+                        "description": "Not supported -The type of event(s) to filter by. Possible values are:\n\n- SHIPMENT (Shipment events)  \n- TRANSPORT (Transport events)\n- EQUIPMENT (Equipment events)\n\nIt is possible to select multiple values by using a comma (,) to separate them. For multiple values the OR-operator is used. For example, event Type=SHIPMENT, EQUIPMENT matches both Shipment- and Equipment- events.\n\nDefault value is all event types.\n",
+                        "schema": {
+                            "enum": [
+                                "SHIPMENT",
+                                "TRANSPORT",
+                                "EQUIPMENT"
+                            ],
+                            "type": "string"
+                        },
+                        "example": "TRANSPORT"
+                    },
+                    {
+                        "name": "shipmentEventTypeCode",
+                        "in": "query",
+                        "description": "Not supported  -The status of the document in the process to filter by. This filter is only relevant when filtering ShipmentEvents.",
+                        "schema": {
+                            "enum": [
+                                "RECE",
+                                "DRFT",
+                                "PENA",
+                                "PENU",
+                                "REJE",
+                                "APPR",
+                                "ISSU",
+                                "SURR",
+                                "SUBM",
+                                "VOID",
+                                "CONF",
+                                "REQS",
+                                "CMPL",
+                                "HOLD",
+                                "RELS"
+                            ],
+                            "type": "string"
+                        },
+                        "example": "DRFT"
+                    },
+                    {
+                        "name": "documentTypeCode",
+                        "in": "query",
+                        "description": "Not supported  -The documentTypeCode to filter by. This filter is only relevant when filtering ShipmentEvents.",
+                        "schema": {
+                            "enum": [
+                                "CBR",
+                                "BKG",
+                                "SHI",
+                                "SRM",
+                                "TRD",
+                                "ARN",
+                                "VGM",
+                                "CAS",
+                                "CUS",
+                                "DGD",
+                                "OOG"
+                            ],
+                            "type": "string"
+                        },
+                        "example": "CBR"
+                    },
+                    {
+                        "name": "carrierBookingReference",
+                        "in": "query",
+                        "description": "A set of unique characters provided by the carrier to identify a booking. Specifying this filter will only return events related to this specific carrierBookingReference.",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "ZIMUIZM24943664"
+                    },
+                    {
+                        "name": "transportDocumentReference",
+                        "in": "query",
+                        "description": "A unique reference number allocated by the shipping line to the transport document and the main number used for tracking the status of the shipment. Specifying this filter will only return events related to this specific transportDocumentReference.",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "ZIMUIZM24943664"
+                    },
+                    {
+                        "name": "transportEventTypeCode",
+                        "in": "query",
+                        "description": "Not supported - Identifier for the type of Transport- event. For multiple values the OR- operator is used. This filter is only relevant when filtering  TransportEvents.",
+                        "schema": {
+                            "enum": [
+                                "ARRI",
+                                "DEPA"
+                            ],
+                            "type": "string"
+                        },
+                        "example": "ARRI"
+                    },
+                    {
+                        "name": "transportCallID",
+                        "in": "query",
+                        "description": "Not supported - A unique ID to identify a transport call, to filter events by. Specifying this filter will only return events related to this specific transportCallID.",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "35S"
+                    },
+                    {
+                        "name": "vesselIMONumber",
+                        "in": "query",
+                        "description": "Not supported - The identifier for a vessel whose schedule details are published. Depending on schedule type, this may not be available yet. Specifying this filter will only return events related to this specific vesselIMONumber.",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": 9308649
+                    },
+                    {
+                        "name": "exportVoyageNumber",
+                        "in": "query",
+                        "description": "Not supported - Filter applied to the vessel operator-specific identifier of the export Voyage. Specifying this filter will only return events related to this particular exportVoyageNumber.",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "32S"
+                    },
+                    {
+                        "name": "carrierServiceCode",
+                        "in": "query",
+                        "description": "Not supported - Filter applied to the carrier specific identifier of the service. Specifying this filter will only return events related to this particular carrierServiceCode.",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "VMS"
+                    },
+                    {
+                        "name": "UNLocationCode",
+                        "in": "query",
+                        "description": "Not supported - The UN Location code identifying a specific location. Specifying this filter will only return events related to this specific UN Location code.",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "VMSGN"
+                    },
+                    {
+                        "name": "equipmentEventTypeCode",
+                        "in": "query",
+                        "description": "Not supported - Unique ID for equipmentEventTypeCode.",
+                        "schema": {
+                            "enum": [
+                                "LOAD",
+                                "DISC",
+                                "GTIN",
+                                "GTOT",
+                                "STUF",
+                                "STRP",
+                                "PICK",
+                                "DROP",
+                                "INSP",
+                                "RSEA",
+                                "RMVD"
+                            ],
+                            "type": "string"
+                        },
+                        "example": "GTOT"
+                    },
+                    {
+                        "name": "equipmentReference",
+                        "in": "query",
+                        "description": "Filters by the unique equipment ID, which should follow the BIC ISO Container Identification Number when possible. Specifying this filter will only return events related to this specific equipmentReference.",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "ZIMU0014300"
+                    },
+                    {
+                        "name": "eventCreatedDateTime",
+                        "in": "query",
+                        "description": "Limit the result by the event creation date. It is possible to use operators on this query parameter by adding a colon followed by an operator at the end of the queryParameterName.",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "2015-12-04T09:01:58.0000000+00:00"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Not supported - Maximum number of items to return.",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": 5
+                    },
+                    {
+                        "name": "cursor",
+                        "in": "query",
+                        "description": "Not supported- A server generated value to specify a specific point in a collection result, used for pagination.",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "fE9mZnNldHw9"
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Not supported - A comma-separated list of field names to define the sort order. Field names should be suffixed by a (:) followed by either the keyword ASC (for ascending order) or DESC (for descening order) to specify direction. :ASC may be omitted, in which case ascending order will be used.",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "DESC"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "anyOf": [
+                                            {
+                                                "$ref": "#/components/schemas/transportEvent"
+                                            },
+                                            {
+                                                "$ref": "#/components/schemas/shipmentEvent"
+                                            },
+                                            {
+                                                "$ref": "#/components/schemas/equipmentEvent"
+                                            }
+                                        ]
+                                    }
+                                },
+                                "example": [
+                                    {
+                                        "eventID": "2496586844",
+                                        "eventCreatedDateTime": "2020-04-03T03:38:21.0000000+00:00",
+                                        "eventType": "EQUIPMENT",
+                                        "eventClassifierCode": "ACT",
+                                        "eventDateTime": "2020-04-02T09:22:00.0000000+00:00",
+                                        "equipmentEventTypeCode": "LOAD",
+                                        "equipmentReference": "ZIMU2505082",
+                                        "ISOEquipmentCode": "22T0",
+                                        "emptyIndicatorCode": "LADEN",
+                                        "eventLocation": {
+                                            "locationName": "SINGAPORE",
+                                            "UNLocationCode": "SGSIN",
+                                            "facilityCode": "POTE",
+                                            "facilityCodeListProvider": "SMDG"
+                                        },
+                                        "documentReferences": [
+                                            {
+                                                "documentReferenceType": "BKG",
+                                                "documentReferenceValue": "ZIMUORF597101"
+                                            },
+                                            {
+                                                "documentReferenceType": "TRD",
+                                                "documentReferenceValue": "ZIMUORF597101"
+                                            }
+                                        ],
+                                        "references": {
+                                            "referenceType": "EQ",
+                                            "referenceValue": "ZIMU2505082"
+                                        },
+                                        "seals": [
+                                            {
+                                                "sealNumber": "A123161612",
+                                                "sealSource": null,
+                                                "sealType": "BLT"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "eventID": "2497133797",
+                                        "eventCreatedDateTime": "2020-04-03T05:33:35.0000000+00:00",
+                                        "eventType": "TRANSPORT",
+                                        "eventClassifierCode": "EST",
+                                        "eventDateTime": "2020-04-02T01:00:00.0000000+00:00",
+                                        "transportEventTypeCode": "DEPA",
+                                        "documentReferences": [
+                                            {
+                                                "documentReferenceType": "BKG",
+                                                "documentReferenceValue": "ZIMUORF597101"
+                                            },
+                                            {
+                                                "documentReferenceType": "TRD",
+                                                "documentReferenceValue": "ZIMUORF597101"
+                                            }
+                                        ],
+                                        "references": {
+                                            "referenceType": "EQ",
+                                            "referenceValue": "ZIMU2505082"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Failure",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                },
+                                "example": {
+                                    "httpMethod": "POST",
+                                    "requestUri": "https://dcsa.org/dcsa/tnt/v1/events",
+                                    "errors": [
+                                        {
+                                            "reason": "invalidQuery",
+                                            "message": "The request did not contain one of the three required query parameters."
+                                        }
+                                    ],
+                                    "statusCode": 400,
+                                    "statusCodeText": "Bad Request",
+                                    "errorDateTime": "2019-11-11T11:11:00.0000000+00:00"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "subErrors": {
+                "type": "array",
+                "items": {
+                    "required": [
+                        "reason",
+                        "message"
+                    ],
+                    "type": "object",
+                    "properties": {
+                        "reason": {
+                            "type": "string",
+                            "description": "High level error message.",
+                            "example": "invalidQuery"
+                        },
+                        "message": {
+                            "type": "string",
+                            "description": "Detailed error message.",
+                            "example": "The request did not contain one of the three required query parameters."
+                        }
+                    }
+                }
+            },
+            "error": {
+                "required": [
+                    "httpMethod",
+                    "requestUri",
+                    "errors",
+                    "statusCode",
+                    "statusCodeText",
+                    "errorDateTime"
+                ],
+                "type": "object",
+                "properties": {
+                    "httpMethod": {
+                        "type": "string",
+                        "description": "The HTTP request method type",
+                        "example": "POST"
+                    },
+                    "requestUri": {
+                        "type": "string",
+                        "description": "The request URI.",
+                        "example": "https://dcsa.org/dcsa/tnt/v1/events"
+                    },
+                    "errors": {
+                        "$ref": "#/components/schemas/subErrors"
+                    },
+                    "statusCode": {
+                        "type": "integer",
+                        "description": "The HTTP status code",
+                        "example": 400
+                    },
+                    "statusCodeText": {
+                        "type": "string",
+                        "description": "The textual representation of the response status.",
+                        "example": "Bad Request"
+                    },
+                    "errorDateTime": {
+                        "type": "string",
+                        "description": "The date and time (in ISO 8601 format) the error occurred.",
+                        "format": "$date-time",
+                        "example": "2019-11-11T23:11:00+00:00"
+                    }
+                }
+            },
+            "address": {
+                "title": "address",
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Name",
+                        "nullable": true
+                    },
+                    "street": {
+                        "type": "string",
+                        "description": "Street",
+                        "nullable": true
+                    },
+                    "streetNumber": {
+                        "type": "integer",
+                        "description": "Street Number",
+                        "format": "int32",
+                        "nullable": true
+                    },
+                    "floor": {
+                        "type": "string",
+                        "description": "Floor",
+                        "nullable": true
+                    },
+                    "postCode": {
+                        "type": "integer",
+                        "description": "Post Code",
+                        "format": "int32",
+                        "nullable": true
+                    },
+                    "city": {
+                        "type": "string",
+                        "description": "City",
+                        "nullable": true
+                    },
+                    "stateRegion": {
+                        "type": "string",
+                        "description": "State Region",
+                        "nullable": true
+                    },
+                    "country": {
+                        "type": "string",
+                        "description": "Country",
+                        "nullable": true
+                    }
+                },
+                "description": "Address Details"
+            },
+            "documentReferences": {
+                "title": "documentReferences",
+                "type": "object",
+                "properties": {
+                    "documentReferenceType": {
+                        "type": "string",
+                        "description": "Document Reference Type",
+                        "nullable": true,
+                        "example": "BKG"
+                    },
+                    "documentReferenceValue": {
+                        "type": "string",
+                        "description": "Document Reference Value",
+                        "nullable": true,
+                        "example": "ZIMUUBOM6399762"
+                    }
+                },
+                "description": "Document Reference Details"
+            },
+            "location": {
+                "title": "location",
+                "type": "object",
+                "properties": {
+                    "locationName": {
+                        "type": "string",
+                        "description": "Location Name",
+                        "nullable": true,
+                        "example": "SINGAPORE"
+                    },
+                    "latitude": {
+                        "type": "number",
+                        "description": "Latitude",
+                        "nullable": true
+                    },
+                    "longitude": {
+                        "type": "number",
+                        "description": "Longitude",
+                        "nullable": true
+                    },
+                    "UNLocationCode": {
+                        "type": "string",
+                        "description": "UN Location Code",
+                        "nullable": true,
+                        "example": "SGSIN"
+                    },
+                    "facilityCode": {
+                        "type": "string",
+                        "description": "Facility Code",
+                        "nullable": true,
+                        "example": "POTE"
+                    },
+                    "facilityCodeListProvider": {
+                        "type": "string",
+                        "description": "Facility Code List Provider",
+                        "nullable": true,
+                        "example": "SMDG"
+                    },
+                    "address": {
+                        "$ref": "#/components/schemas/address"
+                    }
+                },
+                "description": "Location Details"
+            },
+            "references": {
+                "title": "references",
+                "required": [
+                    "referenceType",
+                    "referenceValue"
+                ],
+                "type": "object",
+                "properties": {
+                    "referenceType": {
+                        "type": "string",
+                        "description": "Reference Type",
+                        "example": "EQ"
+                    },
+                    "referenceValue": {
+                        "type": "string",
+                        "description": "Reference Value",
+                        "example": "ZIMU2505082"
+                    }
+                },
+                "description": "Reference Details"
+            },
+            "seals": {
+                "title": "seals",
+                "required": [
+                    "sealNumber",
+                    "sealType"
+                ],
+                "type": "object",
+                "properties": {
+                    "sealNumber": {
+                        "type": "string",
+                        "description": "Seal Number",
+                        "example": "A123161612"
+                    },
+                    "sealSource": {
+                        "type": "string",
+                        "description": "Seal Source",
+                        "nullable": true
+                    },
+                    "sealType": {
+                        "type": "string",
+                        "description": "Seal Type",
+                        "example": "BLT"
+                    }
+                },
+                "description": "Seal Details"
+            },
+            "equipmentEvent": {
+                "title": "equipmentEvent",
+                "required": [
+                    "eventCreatedDateTime",
+                    "eventType",
+                    "eventClassifierCode",
+                    "eventDateTime",
+                    "equipmentEventTypeCode",
+                    "emptyIndicatorCode"
+                ],
+                "type": "object",
+                "properties": {
+                    "eventID": {
+                        "type": "string",
+                        "description": "Event Id",
+                        "nullable": true,
+                        "example": "3cecb101-7a1a-43a4-9d62-e88a131651e2"
+                    },
+                    "eventCreatedDateTime": {
+                        "type": "string",
+                        "description": "Event Create Date and Time",
+                        "example": "2021-01-09T13:12:56+00:00"
+                    },
+                    "eventType": {
+                        "type": "string",
+                        "description": "Event Type",
+                        "example": "EQUIPMENT"
+                    },
+                    "eventClassifierCode": {
+                        "type": "string",
+                        "description": "Event Classifier Code",
+                        "example": "EST"
+                    },
+                    "eventDateTime": {
+                        "type": "string",
+                        "description": "Event Date Time",
+                        "example": "2019-11-11T23:11:00+00:00"
+                    },
+                    "equipmentEventTypeCode": {
+                        "type": "string",
+                        "description": "Equipment Event Type Code",
+                        "example": "LOAD"
+                    },
+                    "equipmentReference": {
+                        "type": "string",
+                        "description": "Equipment Reference",
+                        "nullable": true,
+                        "example": "ZIMUU0014300"
+                    },
+                    "ISOEquipmentCode": {
+                        "type": "string",
+                        "description": "ISO Equipment Code",
+                        "nullable": true,
+                        "example": "22GP"
+                    },
+                    "emptyIndicatorCode": {
+                        "type": "string",
+                        "description": "Empty Indicator Code",
+                        "example": "EMPTY"
+                    },
+                    "eventLocation": {
+                        "$ref": "#/components/schemas/location"
+                    },
+                    "transportCall": {
+                        "$ref": "#/components/schemas/transportCall"
+                    },
+                    "documentReferences": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/documentReferences"
+                        },
+                        "description": ""
+                    },
+                    "references": {
+                        "$ref": "#/components/schemas/references"
+                    },
+                    "seals": {
+                        "$ref": "#/components/schemas/seals"
+                    }
+                },
+                "description": ""
+            },
+            "shipmentEvent": {
+                "title": "shipmentEvent",
+                "required": [
+                    "eventCreatedDateTime",
+                    "eventType",
+                    "eventClassifierCode",
+                    "eventDateTime",
+                    "shipmentEventTypeCode",
+                    "documentID",
+                    "documentTypeCode"
+                ],
+                "type": "object",
+                "properties": {
+                    "eventID": {
+                        "type": "string",
+                        "description": "Event Id",
+                        "nullable": true,
+                        "example": "3cecb101-7a1a-43a4-9d62-e88a131651e2"
+                    },
+                    "eventCreatedDateTime": {
+                        "type": "string",
+                        "description": "Event Create Date and Time",
+                        "example": "2021-01-09T13:12:56+00:00"
+                    },
+                    "eventType": {
+                        "type": "string",
+                        "description": "Event Type",
+                        "example": "SHIPMENT"
+                    },
+                    "eventClassifierCode": {
+                        "type": "string",
+                        "description": "Event Classifier Code",
+                        "example": "EST"
+                    },
+                    "eventDateTime": {
+                        "type": "string",
+                        "description": "Event Date Time",
+                        "example": "2019-11-11T23:11:00+00:00"
+                    },
+                    "shipmentEventTypeCode": {
+                        "type": "string",
+                        "description": "Shipment Event Type Code"
+                    },
+                    "documentID": {
+                        "type": "string",
+                        "description": "Document ID"
+                    },
+                    "documentTypeCode": {
+                        "type": "string",
+                        "description": "Document Type Code"
+                    },
+                    "reason": {
+                        "type": "string",
+                        "description": "Reason",
+                        "nullable": true
+                    },
+                    "references": {
+                        "$ref": "#/components/schemas/references"
+                    }
+                }
+            },
+            "transportEvent": {
+                "title": "transportEvent",
+                "required": [
+                    "eventCreatedDateTime",
+                    "eventType",
+                    "eventClassifierCode",
+                    "eventDateTime",
+                    "transportEventTypeCode",
+                    "transportCall"
+                ],
+                "type": "object",
+                "properties": {
+                    "eventID": {
+                        "type": "string",
+                        "description": "Event Id",
+                        "nullable": true,
+                        "example": "3cecb101-7a1a-43a4-9d62-e88a131651e2"
+                    },
+                    "eventCreatedDateTime": {
+                        "type": "string",
+                        "description": "Event Create Date and Time",
+                        "example": "2021-01-09T13:12:56+00:00"
+                    },
+                    "eventType": {
+                        "type": "string",
+                        "description": "Event Type",
+                        "example": "TRANSPORT"
+                    },
+                    "eventClassifierCode": {
+                        "type": "string",
+                        "description": "Event Classifier Code",
+                        "example": "EST"
+                    },
+                    "eventDateTime": {
+                        "type": "string",
+                        "description": "Event Date Time",
+                        "example": "2019-11-11T23:11:00+00:00"
+                    },
+                    "transportEventTypeCode": {
+                        "type": "string",
+                        "description": "Transport Event Type Code",
+                        "example": "ARRI"
+                    },
+                    "delayReasonCode": {
+                        "type": "string",
+                        "description": "Delay Reason Code",
+                        "nullable": true
+                    },
+                    "changeRemark": {
+                        "type": "string",
+                        "description": "Change Remark",
+                        "nullable": true
+                    },
+                    "transportCall": {
+                        "$ref": "#/components/schemas/transportCall"
+                    },
+                    "documentReferences": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/documentReferences"
+                        },
+                        "description": ""
+                    },
+                    "references": {
+                        "$ref": "#/components/schemas/references"
+                    }
+                },
+                "description": ""
+            },
+            "transportCall": {
+                "title": "transportCall",
+                "required": [
+                    "transportCallID",
+                    "modeOfTransport"
+                ],
+                "type": "object",
+                "properties": {
+                    "transportCallID": {
+                        "type": "string",
+                        "description": "Transport Call ID"
+                    },
+                    "carrierServiceCode": {
+                        "type": "string",
+                        "description": "Carrier Service Code",
+                        "nullable": true
+                    },
+                    "exportVoyageNumber": {
+                        "type": "string",
+                        "description": "Export Voyage Number",
+                        "nullable": true
+                    },
+                    "importVoyageNumber": {
+                        "type": "string",
+                        "description": "Import Voyage Number",
+                        "nullable": true
+                    },
+                    "transportCallSequenceNumber": {
+                        "type": "integer",
+                        "description": "Transport Call Sequence Number",
+                        "format": "int32",
+                        "nullable": true
+                    },
+                    "UNLocationCode": {
+                        "type": "string",
+                        "description": "UN Location Code",
+                        "nullable": true
+                    },
+                    "facilityCode": {
+                        "type": "string",
+                        "description": "Facility Code",
+                        "nullable": true
+                    },
+                    "facilityCodeListProvider": {
+                        "type": "string",
+                        "description": "Facility Code List Provider",
+                        "nullable": true
+                    },
+                    "facilityTypeCode": {
+                        "type": "string",
+                        "description": "Facility Type Code",
+                        "nullable": true
+                    },
+                    "otherFacility": {
+                        "type": "string",
+                        "description": "Other Facility",
+                        "nullable": true
+                    },
+                    "modeOfTransport": {
+                        "type": "string",
+                        "description": "Mode Of Transport"
+                    },
+                    "location": {
+                        "$ref": "#/components/schemas/location"
+                    },
+                    "vessel": {
+                        "$ref": "#/components/schemas/vessel"
+                    }
+                },
+                "description": "Transport Call Details"
+            },
+            "vessel": {
+                "title": "vessel",
+                "required": [
+                    "vesselIMONumber"
+                ],
+                "type": "object",
+                "properties": {
+                    "vesselIMONumber": {
+                        "type": "integer",
+                        "description": "Vessel IMO Number",
+                        "format": "int32"
+                    },
+                    "vesselName": {
+                        "type": "string",
+                        "description": "Vessel Name",
+                        "nullable": true
+                    },
+                    "vesselFlag": {
+                        "type": "string",
+                        "description": "Vessel Flag",
+                        "nullable": true
+                    },
+                    "vesselCallSignNumber": {
+                        "type": "string",
+                        "description": "Vessel Call Sign Number",
+                        "nullable": true
+                    },
+                    "vesselOperatorCarrierCode": {
+                        "type": "string",
+                        "description": "Vessel Operator Carrier Code",
+                        "nullable": true
+                    },
+                    "vesselOperatorCarrierCodeListProvider": {
+                        "type": "string",
+                        "description": "Vessel Operator Carrier Code List Provider",
+                        "nullable": true
+                    }
+                },
+                "description": "Vessel Details"
+            }
+        },
+        "securitySchemes": {
+            "apiKeyHeader": {
+                "type": "apiKey",
+                "name": "Ocp-Apim-Subscription-Key",
+                "in": "header"
+            },
+            "apiKeyQuery": {
+                "type": "apiKey",
+                "name": "subscription-key",
+                "in": "query"
+            }
+        }
+    },
+    "security": [
+        {
+            "apiKeyHeader": []
+        },
+        {
+            "apiKeyQuery": []
+        }
+    ]
+}

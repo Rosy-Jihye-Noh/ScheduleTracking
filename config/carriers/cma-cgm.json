@@ -1,0 +1,70 @@
+{
+  "name": "CMA CGM",
+  "code": "CMCG",
+  "baseUrl": "https://apis.cma-cgm.net",
+  "apis": {
+    "schedule": {
+      "endpoint": "/vesseloperation/commercialschedule/v1/vessel-schedules",
+      "version": "1.0.7",
+      "standard": "DCSA",
+      "method": "GET",
+      "supportsPagination": true
+    },
+    "proforma": {
+      "endpoint": "/vesseloperation/proforma/v2",
+      "version": "2.2.1",
+      "standard": "PROPRIETARY",
+      "method": "GET",
+      "supportsPagination": true
+    },
+    "voyage": {
+      "endpoint": "/vesseloperation/voyage/v2",
+      "version": "2.6.2",
+      "standard": "PROPRIETARY",
+      "method": "GET",
+      "supportsPagination": true
+    },
+    "route": {
+      "endpoint": "/vesseloperation/route/v2",
+      "version": "2.9.3",
+      "standard": "PROPRIETARY",
+      "method": "GET",
+      "supportsPagination": true
+    },
+    "tracking": {
+      "endpoint": "/operation/trackandtrace/v1/events",
+      "version": "2.2.0",
+      "standard": "DCSA",
+      "method": "GET",
+      "supportsPagination": true
+    }
+  },
+  "auth": {
+    "type": "apikey",
+    "headerName": "KeyId",
+    "apiKeys": {
+      "schedule": "CMCG_API_KEY",
+      "proforma": "CMCG_API_KEY",
+      "voyage": "CMCG_API_KEY",
+      "route": "CMCG_API_KEY",
+      "tracking": "CMCG_API_KEY"
+    },
+    "headerNames": {
+      "schedule": "KeyId",
+      "proforma": "KeyId",
+      "voyage": "KeyId",
+      "route": "KeyId",
+      "tracking": "keyId"
+    }
+  },
+  "features": {
+    "supportsPagination": true,
+    "maxLimit": 100,
+    "defaultLimit": 100,
+    "requestTimeout": 30000,
+    "retryAttempts": 3,
+    "retryDelay": 1000
+  },
+  "enabled": true
+}
+

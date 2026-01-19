@@ -1,0 +1,47 @@
+{
+  "name": "ZIM",
+  "code": "ZIM",
+  "baseUrl": "https://apigw.zim.com",
+  "apis": {
+    "schedule": {
+      "endpoint": "/vesselSchedule-sandbox/v2/pointToPoint",
+      "version": "v2",
+      "standard": "PROPRIETARY",
+      "method": "GET",
+      "supportsPagination": false
+    },
+    "tracking": {
+      "endpoint": "/trackAndTrace-sandbox/v1/",
+      "version": "v1",
+      "standard": "DCSA",
+      "method": "GET",
+      "supportsPagination": false
+    }
+  },
+  "auth": {
+    "type": "apikey",
+    "headerName": "Ocp-Apim-Subscription-Key",
+    "apiKeys": {
+      "schedule": "ZIM_API_KEY_SCHEDULE",
+      "tracking": "ZIM_API_KEY_TRACKING"
+    },
+    "primaryKeys": {
+      "schedule": "ZIM_PRIMARY_KEY_SCHEDULE",
+      "tracking": "ZIM_PRIMARY_KEY_TRACKING"
+    },
+    "secondaryKeys": {
+      "schedule": "ZIM_SECONDARY_KEY_SCHEDULE",
+      "tracking": "ZIM_SECONDARY_KEY_TRACKING"
+    }
+  },
+  "features": {
+    "supportsPagination": false,
+    "maxLimit": 100,
+    "defaultLimit": 100,
+    "requestTimeout": 30000,
+    "retryAttempts": 3,
+    "retryDelay": 1000
+  },
+  "enabled": true
+}
+

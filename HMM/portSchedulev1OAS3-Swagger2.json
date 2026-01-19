@@ -1,0 +1,120 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "By Calling Port Schedule\n<>\nBy Calling Port Schedule Information",
+    "version" : "v1",
+    "title" : "portSchedule"
+  },
+  "host" : "apigw.hmm21.com",
+  "basePath" : "/gateway/portSchedule/v1",
+  "schemes" : [ "http" ],
+  "security" : [ {
+    "apiKey" : [ ]
+  } ],
+  "paths" : {
+    "/port-schedule" : {
+      "post" : {
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "portCode",
+          "in" : "query",
+          "description" : "Port Code",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "durationFrom",
+          "in" : "query",
+          "description" : "Duration From Date",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "durationTo",
+          "in" : "query",
+          "description" : "Duration To Date",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "optionVessel",
+          "in" : "query",
+          "description" : "Including Feeder Vessel : 1 \nMother Vessel Only : 2",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "type" : "object"
+          },
+          "x-examples" : {
+            "application/json" : "{\n    \"portCode\" : \"KRPUS\",\n    \"durationFrom\" : \"20211025\",\n    \"durationTo\" : \"20211108\",\n    \"optionVessel\" : \"2\"\n}"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "examples" : {
+              "application/json" : "{\n    \"resultData\": [\n        {\n            \"vesselServiceLoopCode\": \"BH2\",\n            \"vesselName\": \"LOA PEACE\",\n            \"vesselCode\": \"JEAC\",\n            \"scheduleVoyageNo\": \"0048\",\n            \"scheduleDirectionCode\": \"W\",\n            \"vvdCode\": \"JEAC0048W\",\n            \"portCode\": \"KRPUS\",\n            \"arrival\": {\n                \"arrivalDate\": \"20211204\",\n                \"arrivalTime\": \"0130\",\n                \"arrivalStatusCode\": \"L\"\n            },\n            \"berthing\": {\n                \"berthingDate\": \"20211204\",\n                \"berthingTime\": \"0200\",\n                \"berthingStatusCode\": \"L\"\n            },\n            \"departure\": {\n                \"departureDate\": \"20211204\",\n                \"departureTime\": \"1700\",\n                \"departureStatusCode\": \"L\"\n            }\n        },\n        {\n            \"vesselServiceLoopCode\": \"TTP\",\n            \"vesselName\": \"TTP TBN1\",\n            \"vesselCode\": \"HTT1\",\n            \"scheduleVoyageNo\": \"0903\",\n            \"scheduleDirectionCode\": \"S\",\n            \"vvdCode\": \"HTT10903S\",\n            \"portCode\": \"KRPUS\",\n            \"arrival\": {\n                \"arrivalDate\": \"20211221\",\n                \"arrivalTime\": \"2300\",\n                \"arrivalStatusCode\": \"L\"\n            },\n            \"berthing\": {\n                \"berthingDate\": \"20211222\",\n                \"berthingTime\": \"0000\",\n                \"berthingStatusCode\": \"L\"\n            },\n            \"departure\": {\n                \"departureDate\": \"20211222\",\n                \"departureTime\": \"1600\",\n                \"departureStatusCode\": \"L\"\n            }\n        }\n    ],\n    \"resultCode\": \"Success\",\n    \"resultMessage\": \"Success\"\n}"
+            }
+          },
+          "400" : {
+            "description" : "",
+            "examples" : {
+              "application/json" : "{\n    \"errors\": {\n        \"reason\": \"missingParameter\",\n        \"message\": \"The API request is missing a required parameter\"\n    },\n    \"statusCode\": \"400\",\n    \"statusCodeText\": \"Bad Request\"\n}"
+            }
+          },
+          "401" : {
+            "description" : "",
+            "examples" : {
+              "application/json" : "{\n    \"errors\": {\n        \"reason\": \"invalidCredentials\",\n        \"message\": \"The supplied authorization credentials for the request are invalid\"\n    },\n    \"statusCode\": \"401\",\n    \"statusCodeText\": \"Authentication failed\"\n}"
+            }
+          },
+          "500" : {
+            "description" : "",
+            "examples" : {
+              "application/json" : "{\n    \"errors\": {\n        \"reason\": \"internalError\",\n        \"message\": \"The request failed due to an internal error\"\n    },\n    \"statusCode\": \"500\",\n    \"statusCodeText\": \"Internal Server Error\"\n}"
+            }
+          },
+          "403" : {
+            "description" : "",
+            "examples" : {
+              "application/json" : "{\n    \"errors\": {\n        \"reason\": \"accessDenied\",\n        \"message\": \"The requested operation is forbidden\"\n    },\n    \"statusCode\": \"403\",\n    \"statusCodeText\": \"Forbidden\"\n}"
+            }
+          },
+          "404" : {
+            "description" : "",
+            "examples" : {
+              "application/json" : "{\n    \"errors\": {\n        \"reason\": \"notFound\",\n        \"message\": \"The requested resource could not be found.404 Not found MAY be used to mask sensitive information for both 400, 401 and 403\"\n    },\n    \"statusCode\": \"404\",\n    \"statusCodeText\": \"Not Found\"\n}"
+            }
+          },
+          "405" : {
+            "description" : "",
+            "examples" : {
+              "application/json" : "{\n    \"errors\": {\n        \"reason\": \"httpMethodNotAllowed\",\n        \"message\": \"The HTTP method for the request is not supported\"\n    },\n    \"statusCode\": \"405\",\n    \"statusCodeText\": \"Method Not Allowed\"\n}"
+            }
+          },
+          "429" : {
+            "description" : "",
+            "examples" : {
+              "application/json" : "{\n    \"errors\": {\n        \"reason\": \"rateLimitExceeded\",\n        \"message\": \"Too many requests have been sent recently. A Retry-After header SHOULD be added to notify consumer when to try again\"\n    },\n    \"statusCode\": \"429\",\n    \"statusCodeText\": \"Too Many Requests\"\n}"
+            }
+          },
+          "409" : {
+            "description" : "",
+            "examples" : {
+              "application/json" : "{\n    \"errors\": {\n        \"reason\": \"ResourceAlreadyExists\",\n        \"message\": \"The resource already exists. Used when a 'Unique constrain violation' occurs\"\n    },\n    \"statusCode\": \"409\",\n    \"statusCodeText\": \"Conflict\"\n}"
+            }
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions" : {
+    "apiKey" : {
+      "type" : "apiKey",
+      "name" : "x-Gateway-APIKey",
+      "in" : "header"
+    }
+  }
+}

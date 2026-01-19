@@ -1,0 +1,55 @@
+{
+  "name": "HMM",
+  "code": "HMM",
+  "baseUrl": "https://apigw.hmm21.com",
+  "apis": {
+    "schedule": {
+      "endpoint": "/gateway/vesselSchedule/v1/vessel-schedule",
+      "version": "v1",
+      "standard": "PROPRIETARY",
+      "method": "POST",
+      "supportsPagination": false
+    },
+    "portSchedule": {
+      "endpoint": "/gateway/portSchedule/v1/port-schedule",
+      "version": "v1",
+      "standard": "PROPRIETARY",
+      "method": "POST",
+      "supportsPagination": false
+    },
+    "ptpSchedule": {
+      "endpoint": "/gateway/ptpSchedule/v1/port-to-port-schedule",
+      "version": "v1",
+      "standard": "PROPRIETARY",
+      "method": "POST",
+      "supportsPagination": false
+    },
+    "tracking": {
+      "endpoint": "/gateway/dcsaCargoTracking/v1/cargo-tracking-dcsa",
+      "version": "v1",
+      "standard": "PROPRIETARY",
+      "method": "GET",
+      "supportsPagination": false
+    }
+  },
+  "auth": {
+    "type": "apikey",
+    "headerName": "x-Gateway-APIKey",
+    "apiKeys": {
+      "schedule": "HMM_API_KEY_SCHEDULE",
+      "tracking": "HMM_API_KEY_TRACKING",
+      "portSchedule": "HMM_API_KEY_PORT_SCHEDULE",
+      "ptpSchedule": "HMM_API_KEY_SCHEDULE"
+    }
+  },
+  "features": {
+    "supportsPagination": false,
+    "maxLimit": 100,
+    "defaultLimit": 100,
+    "requestTimeout": 30000,
+    "retryAttempts": 3,
+    "retryDelay": 1000
+  },
+  "enabled": true
+}
+

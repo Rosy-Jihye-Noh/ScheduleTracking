@@ -1,0 +1,55 @@
+{
+  "name": "Maersk",
+  "code": "MAERSK",
+  "baseUrl": "https://api.maersk.com/ocean/commercial-schedules/dcsa",
+  "apis": {
+    "schedule": {
+      "endpoint": "/v1/vessel-schedules",
+      "version": "1.0.1",
+      "standard": "DCSA",
+      "method": "GET",
+      "supportsPagination": true
+    },
+    "pointToPoint": {
+      "endpoint": "/v1/point-to-point-routes",
+      "version": "1.0.1",
+      "standard": "DCSA",
+      "method": "GET",
+      "supportsPagination": false
+    },
+    "portSchedule": {
+      "endpoint": "/v1/port-schedules",
+      "version": "1.0.1",
+      "standard": "DCSA",
+      "method": "GET",
+      "supportsPagination": true
+    },
+    "tracking": {
+      "endpoint": "/track-and-trace-private/events",
+      "version": "1.5.0",
+      "standard": "DCSA",
+      "method": "GET",
+      "supportsPagination": true
+    }
+  },
+  "auth": {
+    "type": "apikey",
+    "headerName": "Consumer-Key",
+    "apiKeys": {
+      "schedule": "MAERSK_CONSUMER_KEY",
+      "pointToPoint": "MAERSK_CONSUMER_KEY",
+      "portSchedule": "MAERSK_CONSUMER_KEY",
+      "tracking": "MAERSK_CONSUMER_KEY"
+    }
+  },
+  "features": {
+    "supportsPagination": true,
+    "maxLimit": 100,
+    "defaultLimit": 100,
+    "requestTimeout": 30000,
+    "retryAttempts": 3,
+    "retryDelay": 1000
+  },
+  "enabled": true
+}
+

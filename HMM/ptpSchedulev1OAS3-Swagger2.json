@@ -1,0 +1,144 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "Port-to-Port Schedule\n<>\nPort-to-Port Schedule (only 300 calls per hour is available)",
+    "version" : "v1",
+    "title" : "ptpSchedule"
+  },
+  "host" : "apigw.hmm21.com",
+  "basePath" : "/gateway/ptpSchedule/v1",
+  "schemes" : [ "http" ],
+  "security" : [ {
+    "apiKey" : [ ]
+  } ],
+  "paths" : {
+    "/port-to-port-schedule" : {
+      "post" : {
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "fromLocationCode",
+          "in" : "query",
+          "description" : "From Location Code\t",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "receiveTermCode",
+          "in" : "query",
+          "description" : "Receive Term Code (CY,DR)",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "toLocationCode",
+          "in" : "query",
+          "description" : "To Location Code\t",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "deliveryTermCode",
+          "in" : "query",
+          "description" : "Delivery Term Code (CY,DR)",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "periodDate",
+          "in" : "query",
+          "description" : "Period Date\t",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "weekTerm",
+          "in" : "query",
+          "description" : "Period Duration (MAX 4)",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "webSort",
+          "in" : "query",
+          "description" : "SORT Option D=DEPARTURE DATE(default) T=T/TIME",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "webPriority",
+          "in" : "query",
+          "description" : "PRIORITY Option A=ALL (default) D=DIRECT T=T/S\t",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "type" : "object"
+          },
+          "x-examples" : {
+            "application/json" : "{\n\t\"fromLocationCode\" : \"KRPUS\",\n\t\"receiveTermCode\" : \"CY\",\n\t\"toLocationCode\" : \"DEHAM\",\n\t\"deliveryTermCode\" : \"CY\",\n\t\"periodDate\" : \"20211203\",\n\t\"weekTerm\" : \"2\",\n\t\"webSort\" : \"D\",\n\t\"webPriority\" : \"A\"\n}"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "examples" : {
+              "application/json" : "{\n    \"resultData\": [\n        {\n            \"globaRouteMapNo\": \"W220407024512716\",\n            \"loadingPortName\": \"BUSAN, KOREA\",\n            \"loadingPortCode\": \"KRPUS\",\n            \"loadingTerminalName\": \"PUSAN NEW PORT INTERNATIONAL TERMINAL\",\n            \"loadingTerminalCode\": \"KRPUSPIC\",\n            \"vesselOperatorName\": \"YML\",\n            \"departureDate\": \"2021-12-03T14:49:00\",\n            \"transshipPortName\": \"KAOHSIUNG\",\n            \"transshipPortCode\": \"TWKHH\",\n            \"transshipTerminalName\": \"KAO MING CONTAINER TERMINAL CORP\",\n            \"transshipTerminalCode\": \"TWKHH108\",\n            \"arrivalDate\": \"2022-01-30T20:40:00\",\n            \"transshipVesselCode\": \"HOGR\",\n            \"dischargePortName\": \"HAMBURG, GERMANY\",\n            \"dischargePortCode\": \"DEHAM\",\n            \"dischargeTerminalName\": \"CTB CONTAINER TERMINAL BURCHARDKAI\",\n            \"dischargeTerminalCode\": \"DEHAMCTB\",\n            \"totalTransitDay\": 58,\n            \"porFacilityName\": \"PUSAN NEW PORT INTERNATIONAL TERMINAL\",\n            \"porFacilityCode\": \"KRPUSPIC\",\n            \"deliveryFacilityName\": \"CTB CONTAINER TERMINAL BURCHARDKAI\",\n            \"deliveryFaciltyCode\": \"DEHAMCTB\",\n            \"inlandCutOffTime\": \"2021-11-30T20:45:00\",\n            \"cargoCutOffTime\": \"2021-11-30T20:45:00\",\n            \"vessel\": [\n                {\n                    \"vesselSequence\": 1,\n                    \"vesselName\": \"YM WELCOME\",\n                    \"vesselCode\": \"JWCM\",\n                    \"voyageNumber\": \"0027W\",\n                    \"vesselLoop\": \"KME\",\n                    \"loadPort\": \"BUSAN, KOREA\",\n                    \"dischargePort\": \"KAOHSIUNG\",\n                    \"vesselDepartureDate\": \"2021-12-03T14:49:00\",\n                    \"vesselArrivalDate\": \"2021-12-14T19:00:00\"\n                },\n                {\n                    \"vesselSequence\": 2,\n                    \"vesselName\": \"HMM GARAM\",\n                    \"vesselCode\": \"HOGR\",\n                    \"voyageNumber\": \"0003W\",\n                    \"vesselLoop\": \"FE3\",\n                    \"loadPort\": \"KAOHSIUNG\",\n                    \"dischargePort\": \"HAMBURG, GERMANY\",\n                    \"vesselDepartureDate\": \"2021-12-20T23:18:00\",\n                    \"vesselArrivalDate\": \"2022-01-30T20:40:00\"\n                },\n                {\n                    \"vesselSequence\": 3\n                },\n                {\n                    \"vesselSequence\": 4\n                }\n            ]\n        }\n    ],\n    \"resultCode\": \"Success\",\n    \"resultMessage\": \"Success\"\n}"
+            }
+          },
+          "400" : {
+            "description" : "",
+            "examples" : {
+              "application/json" : "{\n    \"errors\": {\n        \"reason\": \"missingParameter\",\n        \"message\": \"The API request is missing a required parameter\"\n    },\n    \"statusCode\": \"400\",\n    \"statusCodeText\": \"Bad Request\"\n}"
+            }
+          },
+          "401" : {
+            "description" : "",
+            "examples" : {
+              "application/json" : "{\n    \"errors\": {\n        \"reason\": \"invalidCredentials\",\n        \"message\": \"The supplied authorization credentials for the request are invalid\"\n    },\n    \"statusCode\": \"401\",\n    \"statusCodeText\": \"Authentication failed\"\n}"
+            }
+          },
+          "500" : {
+            "description" : "",
+            "examples" : {
+              "application/json" : "{\n    \"errors\": {\n        \"reason\": \"internalError\",\n        \"message\": \"The request failed due to an internal error\"\n    },\n    \"statusCode\": \"500\",\n    \"statusCodeText\": \"Internal Server Error\"\n}\n"
+            }
+          },
+          "403" : {
+            "description" : "",
+            "examples" : {
+              "application/json" : "{\n    \"errors\": {\n        \"reason\": \"accessDenied\",\n        \"message\": \"The requested operation is forbidden\"\n    },\n    \"statusCode\": \"403\",\n    \"statusCodeText\": \"Forbidden\"\n}"
+            }
+          },
+          "404" : {
+            "description" : "",
+            "examples" : {
+              "application/json" : "{\n    \"errors\": {\n        \"reason\": \"notFound\",\n        \"message\": \"The requested resource could not be found.404 Not found MAY be used to mask sensitive information for both 400, 401 and 403\"\n    },\n    \"statusCode\": \"404\",\n    \"statusCodeText\": \"Not Found\"\n}"
+            }
+          },
+          "405" : {
+            "description" : "",
+            "examples" : {
+              "application/json" : "{\n    \"errors\": {\n        \"reason\": \"httpMethodNotAllowed\",\n        \"message\": \"The HTTP method for the request is not supported\"\n    },\n    \"statusCode\": \"405\",\n    \"statusCodeText\": \"Method Not Allowed\"\n}"
+            }
+          },
+          "429" : {
+            "description" : "",
+            "examples" : {
+              "application/json" : "{\n    \"errors\": {\n        \"reason\": \"rateLimitExceeded\",\n        \"message\": \"Too many requests have been sent recently. A Retry-After header SHOULD be added to notify consumer when to try again\"\n    },\n    \"statusCode\": \"429\",\n    \"statusCodeText\": \"Too Many Requests\"\n}"
+            }
+          },
+          "409" : {
+            "description" : "",
+            "examples" : {
+              "application/json" : "{\n    \"errors\": {\n        \"reason\": \"ResourceAlreadyExists\",\n        \"message\": \"The resource already exists. Used when a 'Unique constrain violation' occurs\"\n    },\n    \"statusCode\": \"409\",\n    \"statusCodeText\": \"Conflict\"\n}"
+            }
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions" : {
+    "apiKey" : {
+      "type" : "apiKey",
+      "name" : "x-Gateway-APIKey",
+      "in" : "header"
+    }
+  }
+}
